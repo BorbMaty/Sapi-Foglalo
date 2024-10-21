@@ -1,6 +1,6 @@
 import sqlalchemy
 from sqlalchemy import Integer, Column
-from sqlalchemy import create_engine
+
 
 Base = sqlalchemy.orm.declarative_base()
 
@@ -12,7 +12,7 @@ class Room(Base):
     def __init__(self, id):
         self.id = id
 
-    def addRoom(session):
+    def addRoom(session,id):
         new_room = Room(id)
         session.add(new_room)
         session.commit()
