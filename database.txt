@@ -3,31 +3,35 @@
 # use testDB;
 #
 
-CREATE TABLE User (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    position VARCHAR(255) NOT NULL,
-    year INT
-);
-CREATE TABLE Position (
-    id INT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
-);
-CREATE TABLE Room (
-    id INT PRIMARY KEY
-);
-CREATE TABLE Reserve
-(
-    ReserveId INT PRIMARY KEY,
-    UserId    INT  NOT NULL,
-    RoomId    INT  NOT NULL,
-    Date      DATE NOT NULL,
-    StartHour TIME NOT NULL,
-    EndHour   TIME NOT NULL,
-    FOREIGN KEY (UserId) REFERENCES User (id),
-    FOREIGN KEY (RoomId) REFERENCES Room (id)
+CREATE TABLE Users (
+                      id INT PRIMARY KEY AUTO_INCREMENT,
+                      name VARCHAR(255) NOT NULL,
+                      email VARCHAR(255) NOT NULL,
+                      position VARCHAR(255) NOT NULL,
+                      year INT
 );
 
-select * from user
+CREATE TABLE Positions
+(
+    id   INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Rooms
+(
+    id INT PRIMARY KEY
+);
+
+CREATE TABLE Reserves (
+                         ReserveId INT PRIMARY KEY AUTO_INCREMENT,
+                         UserId INT NOT NULL,
+                         RoomId INT NOT NULL,
+                         Date DATE NOT NULL,
+                         StartHour TIME NOT NULL,
+                         EndHour TIME NOT NULL,
+                         FOREIGN KEY (UserId) REFERENCES Users(id),
+                         FOREIGN KEY (RoomId) REFERENCES Rooms(id)
+);
+
+select * from Users;
 
