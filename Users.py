@@ -4,6 +4,7 @@ from sqlalchemy import create_engine, String
 
 Base = sqlalchemy.orm.declarative_base()
 
+
 class Users(Base):
     __tablename__ = 'Users'
 

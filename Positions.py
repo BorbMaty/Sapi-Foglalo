@@ -5,6 +5,7 @@ from sqlalchemy import create_engine, String
 Base = sqlalchemy.orm.declarative_base()
 
 
+
 # 1xx student number
 # 2xx teacher number
 class Position(Base):

@@ -1,7 +1,6 @@
 import sqlalchemy
 from sqlalchemy import Integer, Column
 
-
 Base = sqlalchemy.orm.declarative_base()
 
 class Room(Base):
