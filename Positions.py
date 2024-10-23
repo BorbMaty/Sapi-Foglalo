@@ -9,7 +9,7 @@ Base = sqlalchemy.orm.declarative_base()
 # 1xx student number
 # 2xx teacher number
 class Position(Base):
-    __tablename__ = 'Position'
+    __tablename__ = 'Positions'
 
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)

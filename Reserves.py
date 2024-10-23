@@ -9,7 +9,7 @@ from Rooms import Room
 Base = sqlalchemy.orm.declarative_base()
 
 class Reserve(Base):
-    __tablename__ = 'Reserve'
+    __tablename__ = 'Reserves'
 
     ReserveId = Column(Integer, primary_key=True, autoincrement=True)
     UserId = Column(Integer, ForeignKey('Users.id'), nullable=False)

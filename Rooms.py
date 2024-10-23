@@ -4,7 +4,7 @@ from sqlalchemy import Integer, Column
 Base = sqlalchemy.orm.declarative_base()
 
 class Room(Base):
-    __tablename__ = 'Room'
+    __tablename__ = 'Rooms'
 
     id = Column(Integer, primary_key=True)
 
