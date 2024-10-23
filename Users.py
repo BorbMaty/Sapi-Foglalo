@@ -4,8 +4,8 @@ from sqlalchemy import create_engine, String
 
 Base = sqlalchemy.orm.declarative_base()
 
-class User(Base):
-    __tablename__ = 'User'
+class Users(Base):
+    __tablename__ = 'Users'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String, nullable=False)
@@ -21,6 +21,6 @@ class User(Base):
 
     def addUser(session, name, email, position, year=None):
         # Új felhasználó hozzáadása az adatbázishoz.
-        new_user = User(name=name, email=email, position=position, year=year)
+        new_user = Users(name=name, email=email, position=position, year=year)
         session.add(new_user)
         session.commit()
