@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 
 import Reserves
 from Positions import Position
-from Users import Users
+from Users import User
 from Rooms import Room
 from Reserves import Reserve
 
@@ -42,7 +42,7 @@ if __name__ == "__main__":
     #Users.addUser(session,"Borbath Matyas", "borbath.matyas@student.ms.sapientia.ro", 100, 3)
     #Users.addUser(session, "Korpos Botond", "korpos.botond@student.ms.sapientia.ro", 100, 3)
     #Users.addUser(session, "Elekes Kollo Jeno", "elekes.kollo.jeno@student.ms.sapientia.ro", 100, 3)
-    Users.addUser(session, "Elekes Kollo Jeno2", "elekes.kollo.jeno@student.ms.sapientia.ro", 100, 3)
+    User.addUser(session, "Elekes Kollo Jeno2", "elekes.kollo.jeno@student.ms.sapientia.ro", 100, 3)
     #Room.addRoom(session,230)
     #Position.addPosition(session,"Tanar",200)
     #Reserves.addReserve(session,1,230,'2024-10-22','9:00:00','11:00:00')

@@ -1,7 +1,7 @@
 import sqlalchemy
 from sqlalchemy import Integer, Column, ForeignKey, Date, Time
 from sqlalchemy.orm import relationship
-from Users import Users
+from Users import User
 from Rooms import Room
 
 
