@@ -39,11 +39,5 @@ if __name__ == "__main__":
 
     session = get_session(database_url)
 
-    #create_database(database_url)
-    User.addUser(session,"Borbath Matyas", "borbath.matyas@student.ms.sapientia.ro", 100, 3)
-    User.addUser(session, "Korpos Botond", "korpos.botond@student.ms.sapientia.ro", 100, 3)
-    User.addUser(session, "Elekes Kollo Jeno", "elekes.kollo.jeno@student.ms.sapientia.ro", 100, 3)
-    # User.addUser(session, "Elekes Kollo Jeno2", "elekes.kollo.jeno@student.ms.sapientia.ro", 100, 3)
-    #Room.addRoom(session,230)
-    #Position.addPosition(session,"Tanar",200)
-    #Reserves.addReserve(session,1,230,'2024-10-22','9:00:00','11:00:00')
+    # User.addUser(session, "Korpos Botond2", "korpos.botond@student.ms.sapientia.ro", 100, 3)
+    User.deleteUserByID(session, 7)
