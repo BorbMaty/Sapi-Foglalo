@@ -1,5 +1,6 @@
 import sqlalchemy
 from sqlalchemy import Integer, Column
+from sqlalchemy.orm import relationship
 
 Base = sqlalchemy.orm.declarative_base()
 
@@ -7,6 +8,8 @@ class Room(Base):
     __tablename__ = 'Rooms'
 
     id = Column(Integer, primary_key=True)
+
+    reservations = relationship('Reserves', backref='Room') 
 
     def __init__(self, id):
         self.id = id
@@ -16,7 +19,7 @@ class RoomDAL:
     def __init__(self, session):
         self.session = session
 
-    def addRoom(self, room_id):
+    def addRoom(self, room_id : int):
         new_room = Room(room_id)
         self.session.add(new_room)
         self.session.commit()
