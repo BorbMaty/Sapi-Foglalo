@@ -1,12 +1,12 @@
+from datetime import date, time
+
 import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 import Reserves
-from Positions import Position
 from Users import User
 from Rooms import Room
-from Reserves import Reserve
 
 
 # --- Define the Base for Models ---
@@ -40,4 +40,6 @@ if __name__ == "__main__":
     session = get_session(database_url)
 
     # User.addUser(session, "Korpos Botond2", "korpos.botond@student.ms.sapientia.ro", 100, 3)
-    User.deleteUserByID(session, 7)
+    # User.deleteUserByID(session, 7)
+    # Room.addRoom(session, 114)
+    Reserves.addReserve(session, 1, 114, date(2024,10,29), time(9), time(10))

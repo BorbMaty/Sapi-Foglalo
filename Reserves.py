@@ -1,10 +1,10 @@
 import sqlalchemy
 from sqlalchemy import Integer, Column, ForeignKey, Date, Time
 from sqlalchemy.orm import relationship
+
+import Users
 from Users import User
 from Rooms import Room
-
-
 
 Base = sqlalchemy.orm.declarative_base()
 
@@ -18,9 +18,8 @@ class Reserve(Base):
     StartHour = Column(Time, nullable=False)
     EndHour = Column(Time, nullable=False)
 
-    user = relationship("Users", backref="reserves")
+    user = relationship("User", backref="reserves")
     room = relationship("Room", backref="reserves")
-
 
     def __init__(self, UserId, RoomId, Date, StartHour, EndHour):
         self.UserId = UserId
@@ -29,25 +28,8 @@ class Reserve(Base):
         self.StartHour = StartHour
         self.EndHour = EndHour
 
-
-def addReserve(session, UserId, RoomId, Date, StartHour, EndHour):
-    # Check if the UserId and RoomId exist in their respective tables
-    user = session.query(Users).filter_by(id=UserId).first()
-    room = session.query(Room).filter_by(id=RoomId).first()
-
-    if not user:
-        print(f"Error: User with id {UserId} does not exist.")
-        return
-    if not room:
-        print(f"Error: Room with id {RoomId} does not exist.")
-        return
-
-    # Proceed with adding the reservation if both User and Room exist
-    new_reserve = Reserve(UserId=UserId, RoomId=RoomId, Date=Date, StartHour=StartHour, EndHour=EndHour)
+def addReserve(session, user_id, room_id, date, start_hour, end_hour):
+    new_reserve = Reserve(UserId=user_id, RoomId=room_id, Date=date, StartHour=start_hour, EndHour=end_hour)
     session.add(new_reserve)
-    try:
-        session.commit()
-        print("Reservation added successfully.")
-    except Exception as e:
-        session.rollback()
-        print(f"Error while adding reservation: {e}")
+    session.commit()
+    return new_reserve
