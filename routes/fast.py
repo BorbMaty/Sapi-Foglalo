@@ -25,12 +25,12 @@ class Booking(BaseModel):
 
 # Variable to store reservations
 reservations = []
-reserve_ref = db.reference("/Reservations")
+reserve_ref = db.reference("/Reserves")
 
 # Root endpoint to serve HTML file
 @app.get("/", response_class=HTMLResponse)
 async def read_root():
-    with open("static/booking.html") as f:
+    with open("../static/booking.html") as f:
         return f.read()
 
 # Booking endpoint to handle reservations
@@ -51,7 +51,7 @@ async def reserve_room(booking: Booking):
     reservations.append(reservation_entry)
     return {"message": f"Room {booking.room_id} booked by user {booking.user_id} on {booking.date} from {booking.start_hour} to {booking.end_hour}."}
 
-@app.get("/reservations")
+@app.get("/reserves")
 async def get_reservations():
-    return {"reservations": reservations}
+    return {"reserves": reservations}
 
