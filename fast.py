@@ -7,6 +7,9 @@ import json
 import firebase_admin
 from  firebase_admin import db, credentials
 
+from datetime import datetime
+
+
 app = FastAPI()
 
 cred = credentials.Certificate("credentials.json")
@@ -27,10 +30,33 @@ class Booking(BaseModel):
 reservations = []
 reserve_ref = db.reference("/Reservations")
 
+def check_date_collision(date, start_hour, end_hour):
+    # Convert string dates to datetime objects
+    start_hour = datetime.strptime(start_hour, "%H:%M")
+    end_hour = datetime.strptime(end_hour, "%H:%M")
+    date = datetime.strptime(date,"%Y-%m-%d")
+
+    # Fetch existing date ranges from Firestore
+    date_ranges_ref = db.reference('/Reservations')
+    existing_data_ranges = date_ranges_ref.get()
+
+    print(existing_data_ranges)
+
+    for existing_data in existing_data_ranges.values():
+        existing_start = datetime.strptime(existing_data['start_hour'], "%H:%M")
+        existing_end = datetime.strptime(existing_data['end_hour'], "%H:%M")
+        existing_date = datetime.strptime(existing_data['date'], "%Y-%m-%d")
+
+        # Check for overlap
+        if (start_hour <= existing_end) and (end_hour >= existing_start) and (date == existing_date):
+            return True  # Collision detected
+
+    return False  # No collision
+
 # Root endpoint to serve HTML file
 @app.get("/", response_class=HTMLResponse)
 async def read_root():
-    with open("static/booking.html") as f:
+    with open("static/booking2.html") as f:
         return f.read()
 
 # Booking endpoint to handle reservations
@@ -45,10 +71,12 @@ async def reserve_room(booking: Booking):
         "end_hour": booking.end_hour,
     }
 
-    reserve_ref.push(reservation_entry)
+    if check_date_collision(booking.date, booking.start_hour, booking.end_hour):
+        raise HTTPException(status_code=400, detail="Room is already reserved for the selected time.")
+    else:
+        reserve_ref.push(reservation_entry)
 
     # Store the reservation
-    reservations.append(reservation_entry)
     return {"message": f"Room {booking.room_id} booked by user {booking.user_id} on {booking.date} from {booking.start_hour} to {booking.end_hour}."}
 
 @app.get("/reservations")
