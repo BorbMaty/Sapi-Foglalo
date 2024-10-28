@@ -1,7 +1,6 @@
 import sqlalchemy
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-
+from sqlalchemy.orm import sessionmaker, Session
 
 # Importing models
 from models import User, Room, Position
@@ -31,7 +30,7 @@ def create_database(db_url):
 
 if __name__ == "__main__":
     database_url = 'mysql+pymysql://root:Almafa%401@localhost/RoomReserver'
-    session = get_session(database_url)
+    session: Session = get_session(database_url)
     User.addUser(session,"Borbath Matyas", "borbath.matyas@student.ms.sapientia.ro", 100, 3)
     #User.addUser(session, "Korpos Botond", "korpos.botond@student.ms.sapientia.ro", 100, 3)
     Room.addRoom(session,230)
