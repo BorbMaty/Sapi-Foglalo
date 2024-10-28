@@ -5,17 +5,17 @@ from sqlalchemy.orm import relationship
 Base = sqlalchemy.orm.declarative_base()
 
 class Reserve(Base):
-    __tablename__ = 'Reserve'
+    __tablename__ = 'Reserves'
 
     ReserveId = Column(Integer, primary_key=True, autoincrement=True)
-    UserId = Column(Integer, ForeignKey('User.id'), nullable=False)
-    RoomId = Column(Integer, ForeignKey('Room.id'), nullable=False)
+    UserId = Column(Integer, ForeignKey('users.id'), nullable=False)
+    RoomId = Column(Integer, ForeignKey('rooms.id'), nullable=False)
     Date = Column(Date, nullable=False)
     StartHour = Column(Time, nullable=False)
     EndHour = Column(Time, nullable=False)
 
-    user = relationship("User", backref="reserves")
-    room = relationship("Room", backref="reserves")
+    users = relationship('User', backref='Reserve')
+    rooms = relationship('Room', backref='Reserve')
 
     def __init__(self, UserId, RoomId, Date, StartHour, EndHour):
         self.UserId = UserId
@@ -29,11 +29,11 @@ class ReserveDAL:
     def __init__(self, session):
         self.session = session
 
-    def addReserve(self, UserId, RoomId, Date, StartHour, EndHour):
-        new_reserve = Reserve(UserId, RoomId, Date, StartHour, EndHour)
-        self.session.add(new_reserve)
+    def addReserve(self, user_id, room_id, date, start_hour, end_hour):
+        reservation = Reserve(user_id, room_id, date, start_hour, end_hour)
+        self.session.add(reservation)
         self.session.commit()
-        return new_reserve
+        return reservation
 
     def getReserve(self, ReserveId):
         return self.session.query(Reserve).filter(Reserve.ReserveId == ReserveId).first()

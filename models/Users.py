@@ -1,6 +1,7 @@
 import sqlalchemy
 from sqlalchemy import Integer, Column
 from sqlalchemy import create_engine, String
+from sqlalchemy.orm import relationship
 
 Base = sqlalchemy.orm.declarative_base()
 
@@ -14,6 +15,8 @@ class User(Base):
     position = Column(String, nullable=False)
     year = Column(Integer, nullable=True)
 
+    reservations = relationship('Reserves', backref='User') 
+
     def __init__(self, name, email, position, year=None):
         self.name = name
         self.email = email
@@ -21,14 +24,12 @@ class User(Base):
         self.year = year
 
     def addUser(session, name, email, position, year=None):
-        # Új felhasználó hozzáadása az adatbázishoz.
         new_user = User(name=name, email=email, position=position, year=year)
         session.add(new_user)
         session.commit()
         print(f"New user. Name: {name}, e-mail: {email}, position: {position}, year : {year}")
 
     def deleteUserByID(session, user_id):
-        # id szerinti felhasználó törlés
         user_to_delete = session.query(User).filter(User.id == user_id).first()
 
         if user_to_delete:
@@ -36,10 +37,14 @@ class User(Base):
             session.commit()
             print(f"Deleted user: {user_to_delete.name} ({user_to_delete.email})")
         else:
+            # TODO: add logging.debug/warning
             print(f"No user with this id: {user_id}")
 
+            # TODO: add custom exception
+            # Create a custom exception from Exception class
+            # raise UserNotFoundException("Sorry, no numbers below zero")
+
     def getUserNameByID(session, user_id):
-        # Felhasználó keresése az ID alapján
         user = session.query(User).filter(User.id == user_id).first()
 
         if user:
