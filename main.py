@@ -1,16 +1,16 @@
+from datetime import date, time
+
 import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 import Reserves
-from Positions import Position
-from Users import Users
+from Users import User
 from Rooms import Room
-from Reserves import Reserve
 
 
 # --- Define the Base for Models ---
-Base = sqlalchemy.orm.declarative_base();
+Base = sqlalchemy.orm.declarative_base()
 
 
 def get_session(db_url):
@@ -32,14 +32,14 @@ def create_database(db_url):
 
 if __name__ == "__main__":
     #database_url = 'mysql+pymysql://borbmaty:Almafa2@192.168.172.207:3306/ProjectDatabase'
-    database_url = 'mysql+pymysql://boti:boti@192.168.172.207:3306/ProjectDatabase'
+    # database_url = 'mysql+pymysql://boti:boti@192.168.172.207:3306/ProjectDatabase'
     #database_url = 'mysql+pymysql://jeno:jeno@192.168.172.207:3306/ProjectDatabase'
 
+    database_url = 'mysql+mysqlconnector://root:1234@localhost:3306/testDB'
+
     session = get_session(database_url)
-    #create_database(database_url)
-    #Users.addUser(session,"Borbath Matyas", "borbath.matyas@student.ms.sapientia.ro", 100, 3)
-    #Users.addUser(session, "Korpos Botond", "korpos.botond@student.ms.sapientia.ro", 100, 3)
-    Users.addUser(session, "Elekes Kollo Jeno", "elekes.kollo.jeno@student.ms.sapientia.ro", 100, 3)
-    #Room.addRoom(session,230)
-    #Position.addPosition(session,"Tanar",200)
-    #Reserves.addReserve(session,1,230,'2024-10-22','9:00:00','11:00:00')
+
+    # User.addUser(session, "Korpos Botond2", "korpos.botond@student.ms.sapientia.ro", 100, 3)
+    # User.deleteUserByID(session, 7)
+    # Room.addRoom(session, 114)
+    Reserves.addReserve(session, 1, 114, date(2024,10,29), time(9), time(10))
