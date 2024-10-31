@@ -1,0 +1,142 @@
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Terem Foglalás</title>
+        <style>
+            @media (max-width: 768px) {
+                body {
+                    background-size: auto 100vh;
+                }
+            }
+            /* General styles for the page */
+            body {
+                font-family: Arial, sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                margin: 0;
+                background-image: url('../images/sapi.jpg');
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+            }
+
+            /* Container for the form */
+            .container {
+                background-color: #fff;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                padding: 30px;
+                width: 300px;
+                text-align: center;
+            }
+
+            /* Styling the title */
+            h1 {
+                font-size: 24px;
+                margin-bottom: 20px;
+                color: #333;
+            }
+
+            /* Style for labels */
+            label {
+                display: block;
+                font-size: 14px;
+                margin: 10px 0 5px;
+                color: #555;
+                text-align: left;
+            }
+
+            /* Style for inputs */
+            input[type="text"],
+            input[type="date"],
+            input[type="time"] {
+                width: 100%;
+                padding: 10px;
+                margin-top: 5px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                box-sizing: border-box;
+                font-size: 14px;
+                color: #333;
+            }
+
+            /* Style for the button */
+            button {
+                width: 100%;
+                padding: 12px;
+                background-color: #4CAF50;
+                border: none;
+                border-radius: 5px;
+                color: #fff;
+                font-size: 16px;
+                cursor: pointer;
+                margin-top: 15px;
+                transition: background-color 0.3s;
+            }
+
+            /* Hover effect for the button */
+            button:hover {
+                background-color: #45a049;
+            }
+
+            /* Responsive adjustments */
+            @media (max-width: 400px) {
+                .container {
+                    width: 90%;
+                    padding: 20px;
+                }
+
+                h1 {
+                    font-size: 20px;
+                }
+            }
+        </style>
+        <script>
+            function bookRoom() {
+                if (!roomId || !userId || !date || !startHour || !endHour) {
+                    alert("Please fill in all fields.");
+                    return;  // Prevent submission if any field is empty
+                }
+                const data = {
+                    room_id: document.getElementById('room_id').value,
+                    user_id: document.getElementById('user_id').value,
+                    date: document.getElementById('date').value,
+                    start_hour: document.getElementById('start_hour').value,
+                    end_hour: document.getElementById('end_hour').value
+                };
+
+                fetch('/reserve', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(data => alert(data.message));
+            }
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Teremfoglalás</h1>
+            <label>Terem:</label>
+            <input type="text" id="room_id" placeholder="pl. 114">
+
+            <label>Felhasználó:</label>
+            <input type="text" id="user_id">
+
+            <label>Dátum:</label>
+            <input type="date" id="date">
+
+            <label>Kezdeti időpont:</label>
+            <input type="time" id="start_hour">
+
+            <label>Végző időpont:</label>
+            <input type="time" id="end_hour">
+
+            <button onclick="bookRoom()">Foglalás leadása</button>
+        </div>
+    </body>
+    </html>

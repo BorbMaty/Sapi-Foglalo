@@ -1,45 +1,45 @@
-from datetime import date, time
+from app.database import engine, Base, Session
+from app.models.position import PositionDAL
+from app.models.position import Position
+from app.models.user import UserDAL
+from app.models.user import User
+from app.models.room import RoomDAL
+from app.models.room import Room
+from app.models.reserve import ReserveDAL
+from app.models.reserve import Reserve
+from datetime import date,time
 
-import sqlalchemy
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+# Create database tables
+Base.metadata.create_all(bind=engine)
 
-import Reserves
-from Users import User
-from Rooms import Room
-
-
-# --- Define the Base for Models ---
-Base = sqlalchemy.orm.declarative_base()
-
-
-def get_session(db_url):
-    engine = create_engine(db_url)
-    Session = sessionmaker(bind=engine)
-    return Session()
-
-
-# --- Create Database Function ---
-def create_database(db_url):
-    # Create the engine (connects to the database)
-    engine = create_engine(db_url)
-
-    # Create the tables in the database
-    Base.metadata.create_all(engine)
-
-    print("Database and User table created successfully!")
-
+def main():
+    db_session = Session()
+    try:
+        # Create a new PositionDAL instance and add a position
+        position_dal = PositionDAL(db_session)
+        # Uncomment the line below to add a position
+        new_position = position_dal.create_position(name="Automat")
+        
+        # Create a new RoomDAL instance and add a room
+        room_dal = RoomDAL(db_session)
+        #new_room = room_dal.create_room(230)
+        user_dal = UserDAL(db_session)
+        #new_user = user_dal.create_user("Borbáth Mátyás-Levente", "borbath.matyas@student.ms.sapientia.ro",100,3)
+        reserve_dal = ReserveDAL(db_session)
+        user_id = 1
+        room_id = 230
+        reserve_date = date(2024, 10, 31)
+        start_hour = time(9, 0)  # 9:00 AM
+        end_hour = time(11, 0)   # 11:00 AM
+        #new_reserve = reserve_dal.create_reserve(user_id, room_id, reserve_date, start_hour, end_hour)
+        #position_dal.delete_position(101)
+     
+    except Exception as e:
+        db_session.rollback()  # Rollback in case of an error
+        print(f"An error occurred: {e}")
+        
+    finally:
+        db_session.close()  # Ensure the session is closed
 
 if __name__ == "__main__":
-    #database_url = 'mysql+pymysql://borbmaty:Almafa2@192.168.172.207:3306/ProjectDatabase'
-    # database_url = 'mysql+pymysql://boti:boti@192.168.172.207:3306/ProjectDatabase'
-    #database_url = 'mysql+pymysql://jeno:jeno@192.168.172.207:3306/ProjectDatabase'
-
-    database_url = 'mysql+mysqlconnector://root:1234@localhost:3306/testDB'
-
-    session = get_session(database_url)
-
-    # User.addUser(session, "Korpos Botond2", "korpos.botond@student.ms.sapientia.ro", 100, 3)
-    # User.deleteUserByID(session, 7)
-    # Room.addRoom(session, 114)
-    Reserves.addReserve(session, 1, 114, date(2024,10,29), time(9), time(10))
+    main()
