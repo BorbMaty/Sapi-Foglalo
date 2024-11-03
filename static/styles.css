@@ -1,0 +1,69 @@
+/* Basic reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container styling */
+.container {
+    max-width: 1000px;
+    margin: auto;
+    text-align: center;
+}
+/* Floor selector styling */
+.floor-selector {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+}
+
+.floor-selector button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #066e3f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.floor-selector button:hover {
+    background-color: #59fc5f;
+}
+
+/* Floor container for blueprint */
+#floor-container {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    background-color: #f3f3f3;  /* Fallback color if image doesn't load */
+    background-size: cover;      /* Makes the background cover the whole container */
+    background-position: center; /* Centers the background image */
+    border: 1px solid #ccc;
+    overflow: hidden;
+}
+
+/* Room styling (to be used as overlays on the blueprint) */
+.room {
+    position: absolute;
+    background-color: #066e3f;
+    color: white;
+    font-size: 22px;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.room:hover {
+    background-color: #59fc5f;
+}
+
+.section1 {
+    top: 50px;
+    left: 150px;
+    width: 300px;
+    height: 200px;
+    background-color: #ff7043; /* Orange */
+}
