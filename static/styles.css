@@ -1,69 +1,168 @@
-/* Basic reset */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-/* Container styling */
-.container {
-    max-width: 1000px;
-    margin: auto;
-    text-align: center;
-}
-/* Floor selector styling */
-.floor-selector {
+body {
     display: flex;
-    justify-content: space-around;
-    margin: 20px 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f8e9a1;
+    margin: 0;
+    font-family: Arial, sans-serif;
 }
-
-.floor-selector button {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    background-color: #066e3f;
-    color: white;
-    border: none;
-    border-radius: 5px;
+h1 {
+    color: #333;
 }
-
-.floor-selector button:hover {
-    background-color: #59fc5f;
-}
-
-/* Floor container for blueprint */
-#floor-container {
+.blueprint {
     position: relative;
-    width: 100%;
-    height: 500px;
-    background-color: #f3f3f3;  /* Fallback color if image doesn't load */
-    background-size: cover;      /* Makes the background cover the whole container */
-    background-position: center; /* Centers the background image */
-    border: 1px solid #ccc;
-    overflow: hidden;
+    width: 1200px;
+    height: 600px;
+    background-color: #fff;
+    border: 2px solid #333;
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
-
-/* Room styling (to be used as overlays on the blueprint) */
 .room {
     position: absolute;
-    background-color: #066e3f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: white;
-    font-size: 22px;
-    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: transform 0.2s;
+    font-size: 40px;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+}
+.room:hover {
+    transform: scale(1.05);
+}
+.r131{
+    background-color: #6C63FF;
+    width: 150px;
+    height: 100px;
+    top: 20px;
+    left: 80px;
+}
+.r130 {
+    background-color: #6C63FF;
+    width: 150px;
+    height: 100px;
+    top: 20px;
+    left: 250px;
+}
+.r129 {
+    background-color: #6C63FF;
+    width: 150px;
+    height: 100px;
+    top: 20px;
+    left: 420px;
+}
+.r128 {
+    background-color: #6C63FF;
+    width: 150px;
+    height: 100px;
+    top: 20px;
+    left: 590px;
+}
+.r127 {
+    background-color: #FF0000;
+    width: 230px;
+    height: 100px;
+    top: 20px;
+    left: 950px;
+    font-size: 100%;
+}
+.placc {
+    background-color: #AAFF00;
+    width: 350px;
+    height: 200px;
+    top: 140px;
+    left: 20px;
+}
+.aula {
+    background-color: #F0F300;
+    width: 350px;
+    height: 200px;
+    top: 140px;
+    left: 390px;
+}
+.r114 {
+    background-color: #6C63FF;
+    width: 230px;
+    height: 200px;
+    top: 140px;
+    left: 950px;
+}
+.bufe {
+    background-color: #ffc363;
+    width: 100px;
+    height: 200px;
+    top: 360px;
+    left: 20px;
+}
+.r111 {
+    background-color: #6C63FF;
+    width: 150px;
+    height: 100px;
+    top: 460px;
+    left: 690px;
+}
+.r112 {
+    background-color: #6C63FF;
+    width: 150px;
+    height: 100px;
+    top: 460px;
+    left: 860px;
+}
+.r113 {
+    background-color: #6C63FF;
+    width: 100px;
+    height: 150px;
+    top: 410px;
+    left: 1080px;
+}
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.modal-content h2 {
+    margin-top: 0;
+}
+
+.close-btn {
+    background: #ff6565;
+    color: white;
+    padding: 8px 12px;
+    border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
 }
 
-.room:hover {
-    background-color: #59fc5f;
-}
-
-.section1 {
-    top: 50px;
-    left: 150px;
-    width: 300px;
-    height: 200px;
-    background-color: #ff7043; /* Orange */
+.submit-btn {
+    background: #6C63FF;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
 }
