@@ -15,24 +15,29 @@ Base.metadata.create_all(bind=engine)
 def main():
     db_session = Session()
     try:
-        # Create a new PositionDAL instance and add a position
         position_dal = PositionDAL(db_session)
-        # Uncomment the line below to add a position
-        new_position = position_dal.create_position(name="Automat")
-        
-        # Create a new RoomDAL instance and add a room
         room_dal = RoomDAL(db_session)
-        #new_room = room_dal.create_room(230)
         user_dal = UserDAL(db_session)
-        #new_user = user_dal.create_user("Borbáth Mátyás-Levente", "borbath.matyas@student.ms.sapientia.ro",100,3)
-        reserve_dal = ReserveDAL(db_session)
-        user_id = 1
-        room_id = 230
-        reserve_date = date(2024, 10, 31)
-        start_hour = time(9, 0)  # 9:00 AM
-        end_hour = time(11, 0)   # 11:00 AM
-        #new_reserve = reserve_dal.create_reserve(user_id, room_id, reserve_date, start_hour, end_hour)
-        #position_dal.delete_position(101)
+        reserves_dal = ReserveDAL(db_session)
+
+
+        # new_position = position_dal.create_position(position_id=1,name="Szamtech")
+        # new_position = position_dal.create_position(name="Auto")
+
+        x = position_dal.get_all_positions()
+        print(x)
+
+        # Create a new RoomDAL instance and add a room
+        # new_room = room_dal.create_room(114)
+
+        # Create a user
+        # new_user = user_dal.create_user("matyi", "matyi@gmail.com",1,3)
+
+        # id = user_dal.get_id_by_name("matyi")
+        # print(id)
+
+        # new_reserve = reserves_dal.create_reserve(1, 114, "2024.11.05", 9, 11)
+        # #position_dal.delete_position(101)
      
     except Exception as e:
         db_session.rollback()  # Rollback in case of an error

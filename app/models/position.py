@@ -8,7 +8,7 @@ class Position(Base):
     __tablename__ = 'Positions'
     __table_args__ = {'extend_existing': True}
     
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True)
     name = Column(String(255), nullable=False)
     
     users = relationship("User", back_populates="position")
@@ -23,8 +23,8 @@ class PositionDAL:
     def get_all_positions(self) -> list[Position]:
         return self.db_session.query(Position).all()
 
-    def create_position(self, name: str, position_id: int = None) -> Position:
-        new_position = Position(id=position_id, name=name) if position_id else Position(name=name)
+    def create_position(self, position_id: int, name: str) -> Position:
+        new_position = Position(id=position_id, name=name)
         self.db_session.add(new_position)
         self.db_session.commit()
         self.db_session.refresh(new_position)

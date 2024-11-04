@@ -50,3 +50,7 @@ class UserDAL:
             self.db_session.delete(user)
             self.db_session.commit()
         return user
+
+    def get_id_by_name(self, name: str) -> int:
+        user = self.db_session.query(User).filter(User.name == name).first()
+        return user.id if user else None
