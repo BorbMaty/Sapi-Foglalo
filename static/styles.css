@@ -16,6 +16,7 @@ h1 {
     width: 1200px;
     height: 600px;
     background-color: #fff;
+    background-image: url("../images/old-cement-wall-texture.jpg");
     border: 2px solid #333;
     border-radius: 5px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -35,90 +36,153 @@ h1 {
 .room:hover {
     transform: scale(1.05);
 }
+.fal {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #000000;
+    cursor: pointer;
+}
+.r132{
+    background-color: #6C63FF;
+    width: 140px;
+    height: 140px;
+    top: 20px;
+    left: 20px;
+}
 .r131{
     background-color: #6C63FF;
-    width: 150px;
-    height: 100px;
+    width: 140px;
+    height: 140px;
     top: 20px;
-    left: 80px;
+    left: 170px;
 }
 .r130 {
     background-color: #6C63FF;
-    width: 150px;
-    height: 100px;
+    width: 140px;
+    height: 140px;
     top: 20px;
-    left: 250px;
+    left: 320px;
 }
 .r129 {
     background-color: #6C63FF;
-    width: 150px;
-    height: 100px;
+    width: 140px;
+    height: 140px;
     top: 20px;
-    left: 420px;
+    left: 470px;
 }
 .r128 {
     background-color: #6C63FF;
-    width: 150px;
-    height: 100px;
+    width: 140px;
+    height: 140px;
     top: 20px;
-    left: 590px;
+    left: 620px;
 }
 .r127 {
     background-color: #FF0000;
-    width: 230px;
-    height: 100px;
+    width: 300px;
+    height: 140px;
     top: 20px;
-    left: 950px;
+    left: 880px;
     font-size: 100%;
 }
 .placc {
     background-color: #AAFF00;
-    width: 350px;
-    height: 200px;
-    top: 140px;
+    width: 430px;
+    height: 240px;
+    top: 180px;
     left: 20px;
 }
 .aula {
     background-color: #F0F300;
-    width: 350px;
-    height: 200px;
-    top: 140px;
-    left: 390px;
+    width: 290px;
+    height: 240px;
+    top: 180px;
+    left: 470px;
 }
 .r114 {
     background-color: #6C63FF;
-    width: 230px;
-    height: 200px;
-    top: 140px;
-    left: 950px;
+    width: 300px;
+    height: 240px;
+    top: 180px;
+    left: 880px;
 }
 .bufe {
     background-color: #ffc363;
     width: 100px;
-    height: 200px;
-    top: 360px;
-    left: 20px;
+    height: 140px;
+    top: 440px;
+    left: 320px;
 }
 .r111 {
     background-color: #6C63FF;
-    width: 150px;
-    height: 100px;
-    top: 460px;
-    left: 690px;
+    width: 140px;
+    height: 140px;
+    top: 440px;
+    left: 740px;
 }
 .r112 {
     background-color: #6C63FF;
-    width: 150px;
-    height: 100px;
-    top: 460px;
-    left: 860px;
+    width: 140px;
+    height: 140px;
+    top: 440px;
+    left: 890px;
 }
 .r113 {
     background-color: #6C63FF;
-    width: 100px;
-    height: 150px;
-    top: 410px;
-    left: 1080px;
+    width: 140px;
+    height: 140px;
+    top: 440px;
+    left: 1040px;
+}
+.fal1 {
+    width: 450px;
+    height: 6px;
+    top: 168px;
+    left: 12px;
+}
+.fal2 {
+    width: 6px;
+    height: 168px;
+    top: 6px;
+    left: 6px;
+}
+.fal3 {
+    width: 1178px;
+    height: 6px;
+    top: 6px;
+    left: 12px;
+}
+.fal4 {
+    width: 450px;
+    height: 6px;
+    top: 426px;
+    left: 12px;
+}
+.fal5 {
+    width: 1178px;
+    height: 6px;
+    top: 588px;
+    left: 12px;
+}
+.fal6 {
+    width: 6px;
+    height: 168px;
+    top: 426px;
+    left: 6px;
+}
+.fal7 {
+    width: 6px;
+    height: 264px;
+    top: 168px;
+    left: 458px;
+}
+.fal8 {
+    width: 6px;
+    height: 588px;
+    top: 6px;
+    left: 1186px;
 }
 .modal {
     display: none;
