@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teremvalasztas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Teremvalasztas</h1>
+    <div class="blueprint">
+        <div class="clickable_room r132" onclick="bookRoom('r132')">132</div>
+        <div class="clickable_room r131" onclick="bookRoom('r131')">131</div>
+        <div class="clickable_room r130" onclick="bookRoom('r130')">130</div>
+        <div class="clickable_room r129" onclick="bookRoom('r129')">129</div>
+        <div class="clickable_room r128" onclick="bookRoom('r128')">128</div>
+        <div class="nonclickable_room r127">Gepeszmernoki tanszek</div>
+        <div class="nonclickable_room aula">Aula</div>
+        <div class="clickable_room r114" onclick="bookRoom('r114')">114</div>
+        <div class="nonclickable_room porta">Porta</div>
+        <div class="nonclickable_room bufe">Bufe</div>
+        <div class="clickable_room r111" onclick="bookRoom('r111')">111</div>
+        <div class="clickable_room r112" onclick="bookRoom('r112')">112</div>
+        <div class="clickable_room r113" onclick="bookRoom('r113')">113</div>
+        <div class="nonclickable_room placc">Placc</div>
+        <div class="nonclickable_room placc2"></div>
+        <div class="nonclickable_room kalap"></div>
+    </div>
+    
+
+    <!-- Modal for booking form -->
+    <div class="modal" id="bookingModal">
+        <div class="modal-content">
+            <h2>Foglalas <span id="roomName">Room</span></h2>
+            <form id="bookingForm">
+                <label for="name">Nev:</label><br>
+                <input type="text" id="name" name="name" required><br><br>
+                
+                <label for="date">Foglalas datum:</label><br>
+                <input type="date" id="date" name="date" required><br><br>
+
+                <label for="date">Kezdeti ora:</label><br>
+                <input type="time" id="start_hour" name="start_hour" required><br><br>
+
+                <label for="date">Vegso ora:</label><br>
+                <input type="time" id="end_hour" name="end_hour" required><br><br>
+                
+                
+                <button type="button" class="submit-btn" onclick="submitBooking()">Confirm Booking</button>
+                <button type="button" class="close-btn" onclick="closeModal()">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
