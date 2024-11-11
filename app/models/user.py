@@ -28,10 +28,24 @@ class UserDAL:
         return new_user
 
     def get_user_by_id(self, user_id: int):
-        return self.db_session.query(User).filter(User.id == user_id).first()
+        # Retrieve the User instance by ID
+        user = self.db_session.query(User).filter(User.id == user_id).first()
+        if user:
+            print(f"User with ID {user.id} found. Name = {user.name}")
+        else:
+            print(f"No user found with ID {user_id}.")
+        return user
 
     def get_all_users(self):
-        return self.db_session.query(User).all()
+        # Retrieve all User instances
+        users = self.db_session.query(User).all()
+        if users:
+            print("All users:")
+            for user in users:
+                print(f"- ID: {user.id}")
+        else:
+            print("No users found.")
+        return users
 
     def update_user(self, user_id: int, name: str = None, email: str = None, PositionId: int = None, year: int = None):
         user = self.get_user_by_id(user_id)

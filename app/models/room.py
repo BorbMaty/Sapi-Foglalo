@@ -34,10 +34,12 @@ class RoomDAL:
         return rooms
 
     def delete_room(self, room_id: int) -> bool:
-        room = self.get_room_by_id(room_id)
+        room = self.session.query(Room).filter(Room.id == room_id).first()
         if room:
             self.session.delete(room)
             self.session.commit()
             return True
-        return False
+        else:
+            return False
+
 
