@@ -18,10 +18,22 @@ class PositionDAL:
         self.db_session = db_session
 
     def get_position_by_id(self, position_id: int) -> Position:
-        return self.db_session.query(Position).filter(Position.id == position_id).first()
+        position = self.db_session.query(Position).filter(Position.id == position_id).first()
+        if position:
+            print(f"Position with ID {position.id}:\n- Name: {position.name}")
+        else:
+            print(f"No position found with ID {position_id}.")
+        return position
 
     def get_all_positions(self) -> list[Position]:
-        return self.db_session.query(Position).all()
+        positions = self.db_session.query(Position).all()
+        if positions:
+            print("All positions:")
+            for position in positions:
+                print(f"- ID: {position.id}, Name: {position.name}")
+        else:
+            print("No positions found.")
+        return positions
 
     def create_position(self, position_id: int, name: str) -> Position:
         new_position = Position(id=position_id, name=name)

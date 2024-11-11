@@ -24,8 +24,12 @@ def main():
         # new_position = position_dal.create_position(position_id=1,name="Szamtech")
         # new_position = position_dal.create_position(name="Auto")
 
-        x = position_dal.get_all_positions()
-        print(x)
+        # x = position_dal.get_all_positions()
+        # print(x)
+
+        # position_dal.get_all_positions()
+        # room_dal.get_all_rooms()
+        room_dal.get_room_by_id(115)
 
         # Create a new RoomDAL instance and add a room
         # new_room = room_dal.create_room(114)
