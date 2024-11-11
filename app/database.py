@@ -10,3 +10,11 @@ Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 # Define the base for models
 Base = declarative_base()
+
+# Dependency to get DB session
+def get_db():
+    db = Session()
+    try:
+        yield db
+    finally:
+        db.close()
