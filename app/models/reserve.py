@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, Date, Time, ForeignKey
 from sqlalchemy.orm import relationship
-from app.database import Base
-from app.database import Session  # Use the correct absolute import
+from app.database.database import Base
+from app.database.database import Session  # Use the correct absolute import
 from datetime import date,time
 
 

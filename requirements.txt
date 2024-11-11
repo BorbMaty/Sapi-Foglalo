@@ -2,3 +2,4 @@ SQLAlchemy
 firebase
 fastapi
 mysql-connector-python
+pydantic
