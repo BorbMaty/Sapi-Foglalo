@@ -1,21 +1,37 @@
 # app/schemas/reserve.py
 from pydantic import BaseModel
-from typing import Optional
+from datetime import date, time
+
+class UserResponse(BaseModel):
+    id: int
+    name: str
+    email: str
+
+    class Config:
+        from_attributes = True
+
+class RoomResponse(BaseModel):
+    id: int
+
+    class Config:
+        from_attributes = True
 
 class ReserveCreate(BaseModel):
-    UserId: int
-    RoomId: int
-    Date: str  # 'YYYY-MM-DD' format
-    StartHour: str  # 'HH:MM' format
-    EndHour: str  # 'HH:MM' format
+    user_id: int
+    room_id: int
+    date: date
+    start_hour: time
+    end_hour: time
 
 class ReserveResponse(BaseModel):
     ReserveId: int
     UserId: int
     RoomId: int
-    Date: str
-    StartHour: str
-    EndHour: str
+    Date: date
+    StartHour: time
+    EndHour: time
+    user: UserResponse  # Nested User
+    room: RoomResponse  # Nested Room
 
     class Config:
-        orm_mode = True
+        from_attributes = True

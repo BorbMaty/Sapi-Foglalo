@@ -9,4 +9,4 @@ class PositionResponse(BaseModel):
     name: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True  # Replace orm_mode with from_attributes for Pydantic v2

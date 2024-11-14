@@ -19,8 +19,8 @@ class UserResponse(BaseModel):
     id: int
     name: str
     email: str
-    Position: PositionResponse  # Nested PositionResponse schema
-    year: Optional[int] = None
+    position: PositionResponse  # Include the Position relationship here
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+

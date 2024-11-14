@@ -1,16 +1,11 @@
-# schemas/room.py
+# app/schemas.py
 from pydantic import BaseModel
 
 class RoomCreate(BaseModel):
-    name: str
-    capacity: int
-    location: str
+    id: int
 
 class RoomResponse(BaseModel):
     id: int
-    name: str
-    capacity: int
-    location: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True  # This ensures compatibility with the Room model
