@@ -1,29 +1,40 @@
 const levels = new Map([
     [1, [
-        { name: "133", class: "room r133", onclick : "bookRoom('133')" },
-        { name: "132", class: "room r132", onclick : "bookRoom('132')" },
-        { name: "131", class: "room r131", onclick : "bookRoom('131')" },
-        { name: "130", class: "room r130", onclick : "bookRoom('130')" },
-        { name: "129", class: "room r129", onclick : "bookRoom('129')" },
-        { name: "128", class: "room r128", onclick : "bookRoom('128')" },
+        { name: "133", class: "room r133"},
+        { name: "132", class: "room r132"},
+        { name: "131", class: "room r131"},
+        { name: "130", class: "room r130"},
+        { name: "129", class: "room r129"},
+        { name: "128", class: "room r128"},
         { name: "Gepeszmernoki Tanszek", class: "room nonclickable r127" },
         { name: "Aula", class: "room nonclickable aula" },
-        { name: "114", class: "room r114", onclick : "bookRoom('114')" },
+        { name: "114", class: "room r114"},
         { name: "Porta", class: "room nonclickable porta" },
         { name: "Bufe", class: "room nonclickable bufe" },
-        { name: "111", class: "room r111", onclick : "bookRoom('111')" },
-        { name: "112", class: "room r112", onclick : "bookRoom('112')" },
-        { name: "113", class: "room r113", onclick : "bookRoom('113')" }
+        { name: "111", class: "room r111"},
+        { name: "112", class: "room r112"},
+        { name: "113", class: "room r113"},
+        { name: "", class: "room nonclickable placc"},
+        { name: "", class: "room nonclickable placc2"},
+        { name: "", class: "room nonclickable kalap"},
+        { name: "+", class: "leveling-button leveling-up"},
+        { name: "-", class: "leveling-button leveling-down"}
+        
     ]],
     [2, [
-        { name: "217", class: "room r217", onclick : "bookRoom('217')"},
-        { name: "216", class: "room r216", onclick : "bookRoom('216')" },
-        { name: "213", class: "room r213", onclick : "bookRoom('213')" },
-        { name: "212", class: "room r212", onclick : "bookRoom('212')" },
-        { name: "209", class: "room r209", onclick : "bookRoom('209')" },
-        { name: "208", class: "room r208", onclick : "bookRoom('208')" },
-        { name: "207", class: "room r207", onclick : "bookRoom('207')" },
-        { name: "Villamosmernoki Tanszek", class: "room nonclickable r223" }
+        { name: "217", class: "room r217"},
+        { name: "216", class: "room r216"},
+        { name: "213", class: "room r213"},
+        { name: "212", class: "room r212"},
+        { name: "209", class: "room r209"},
+        { name: "208", class: "room r208"},
+        { name: "207", class: "room r207"},
+        { name: "Villamosmernoki Tanszek", class: "room nonclickable r223" },
+        { name: "", class: "room nonclickable placc"},
+        { name: "", class: "room nonclickable placc2"},
+        { name: "", class: "room nonclickable kalap"},
+        { name: "+", class: "leveling-button leveling-up"},
+        { name: "-", class: "leveling-button leveling-down"}
     ]],
     [3, [
         { name: "Room 301", class: "room" },
@@ -49,9 +60,36 @@ function replaceContent(level) {
         const roomDiv = document.createElement('div');
         roomDiv.className = room.class;
         roomDiv.textContent = room.name;
+
+         // Attach onclick only if the room is clickable
+        if (!room.class.includes('nonclickable') && !room.class.includes('leveling-button') && room.name) {
+            roomDiv.onclick = () => bookRoom(room.name);
+        }
         container.appendChild(roomDiv);
     });
 }
+window.onload = function () {
+    replaceContent(1);
+};
+
+let currentLevel = 1; // Start at level 1
+const maxLevel = 4; // Maximum level
+const minLevel = 1; // Minimum level
+
+function increaseLevel() {
+    if (currentLevel < maxLevel) {
+        currentLevel++;
+        replaceContent(currentLevel);
+    }
+}
+
+function decreaseLevel() {
+    if (currentLevel > minLevel) {
+        currentLevel--;
+        replaceContent(currentLevel);
+    }
+}
+
 // Function to open the booking modal with the selected room name
 function bookRoom(room) {
     // Ensure the room name is displayed in the appropriate element

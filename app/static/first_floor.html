@@ -9,26 +9,12 @@
 <body>
     <h1>Teremvalasztas</h1>
     <div class="blueprint">
-        <div class="room r133" onclick="bookRoom('r133')">133</div>
-        <div class="room r132" onclick="bookRoom('r132')">132</div>
-        <div class="room r131" onclick="bookRoom('r131')">131</div>
-        <div class="room r130" onclick="bookRoom('r130')">130</div>
-        <div class="room r129" onclick="bookRoom('r129')">129</div>
-        <div class="room r128" onclick="bookRoom('r128')">128</div>
-        <div class="room nonclickable r127">Gepeszmernoki tanszek</div>
-        <div class="room nonclickable aula">Aula</div>
-        <div class="room r114" onclick="bookRoom('r114')">114</div>
-        <div class="room nonclickable porta">Porta</div>
-        <div class="room nonclickable bufe">Bufe</div>
-        <div class="room r111" onclick="bookRoom('r111')">111</div>
-        <div class="room r112" onclick="bookRoom('r112')">112</div>
-        <div class="room r113" onclick="bookRoom('r113')">113</div>
+        <button class="room leveling-down", onclick="decreaseLevel()">-</button>
+        <button class="room leveling-up", onclick="increaseLevel()">+</button>
     </div>
-    <div class="room nonclickable placc">Placc</div>
-    <div class="room nonclickable placc2"></div>
-    <div class="room nonclickable kalap"></div>
     
-    <button onclick="replaceContent(2)">Replace Content</button>
+    <!-- <button onclick="replaceContent(1)">Replace Content</button> -->
+
     
 
     <!-- Modal for booking form -->
