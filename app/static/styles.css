@@ -7,6 +7,7 @@ body {
     background-color: #fff;
     margin: 0;
     font-family: Arial, sans-serif;
+    overflow:visible;
 }
 h1 {
     color: #000;
@@ -19,7 +20,14 @@ h1 {
     background-color: #fff;
     background-image: url("../images/old-cement-wall-texture.jpg");
     border: 10px solid black;
-    border-radius: 5px;
+}
+.outer, .shrink {
+    height: auto;
+    transform-origin: top left;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .leveling-button {
     position: absolute;
@@ -32,11 +40,7 @@ h1 {
     transition: transform 0.2s;
     font-size: 40px;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    background-image: url("../images/plank_texture.jpg");
     border: 3px solid black;
-}
-.leveling-button:hover {
-    transform: scale(1.05);
 }
 .room {
     position: absolute;
@@ -55,6 +59,9 @@ h1 {
 .room:hover {
     transform: scale(1.05);
 }
+.leveling-button:hover {
+    transform: scale(1.05);
+}
 .nonclickable {
     cursor: default;
     color: white;
@@ -66,79 +73,60 @@ h1 {
     opacity: 1;
     transform: none;
 }
-.r133{
+.r133, .r132, .r131, .r130, .r129, .r128, .r127 {
     width: 140px;
     height: 140px;
     top: 20px;
+}
+.r133{
     left: 20px;
 }
 .r132{
-    width: 140px;
-    height: 140px;
-    top: 20px;
     left: 170px;
 }
 .r131{
-    width: 140px;
-    height: 140px;
-    top: 20px;
     left: 320px;
 }
 .r130 {
-    width: 140px;
-    height: 140px;
-    top: 20px;
     left: 470px;
 }
 .r129 {
-    width: 140px;
-    height: 140px;
-    top: 20px;
     left: 620px;
 }
 .r128 {
-    width: 140px;
-    height: 140px;
-    top: 20px;
     left: 770px;
 }
 .r127 {
-    width: 300px;
-    height: 140px;
-    top: 20px;
+    width:300px;
     left: 1030px;
     font-size: 25px;
 }
-.placc {
+.placc, .placc2 {
+    position: absolute;
+    display: flex;
     background-color: #fff;
+    border: 10px solid black;
+    border-left: 0px solid black;
+}
+.placc {
     width: 600px;
     height: 225px;
-    top: 180px;
-    left: -10px;
-    border: 10px solid black;
-    border-left: 0px solid black;
-    opacity: 1;
-    background-image:none;
+    top: 190px;
+    left: 0px;
 }
 .placc2 {
-    background-color: #fff;
     width: 430px;
     height: 195px;
-    top: 415px;
-    left: -10px;
-    border: 10px solid black;
-    border-left: 0px solid black;
+    top: 425px;
+    left: 0px;
     border-top: 0px solid black;
     border-bottom: 0px solid black;
-    opacity: 1;
-    background-image:none;
 }
 .aula {
     width: 290px;
     height: 240px;
     top: 180px;
     left: 620px;
-    background-color: #fff;
 }
 .r114 {
     width: 300px;
@@ -146,49 +134,37 @@ h1 {
     top: 180px;
     left: 1030px;
 }
-.r111 {
+.r111, .r112, .r113, .porta, .bufe {
     width: 140px;
     height: 140px;
     top: 440px;
+}
+.r111 {
     left: 890px;
 }
 .r112 {
-    width: 140px;
-    height: 140px;
-    top: 440px;
     left: 1040px;
 }
 .r113 {
-    width: 140px;
-    height: 140px;
-    top: 440px;
     left: 1190px;
 }
 .porta {
-    width: 140px;
-    height: 140px;
-    top: 440px;
     left: 740px;
-    background-image: url("../images/blue-wooden-textured-flooring-background.jpg");
 }
 .bufe {
-    width: 150px;
-    height: 140px;
-    top: 440px;
     left: 450px;
-    background-image: url("../images/blue-wooden-textured-flooring-background.jpg");
 }
 .kalap {
+    position: absolute;
+    display: flex;
     width: 100px;
     height: 100px;
-    left: 1310px;
-    top: -80px;
+    left: 1320px;
+    top: -70px;
     transform: rotate(30deg);
     background-image: url("../images/kalap.png");
     background-size: cover;
     background-repeat: no-repeat;
-    border: 0px solid black;
-    opacity:1;
 }
 .r217 {
     width: 130px;
@@ -242,15 +218,15 @@ h1 {
 .leveling-up {
     width: 50px;
     height: 50px;
-    top: 140px;
-    left: 1040px;
+    top: 50px;
+    left: 955px;
     background-color: #09d391;
 }
 .leveling-down {
     width: 50px;
     height: 50px;
-    top: 200px;
-    left: 1040px;
+    top: 110px;
+    left: 955px;
     background-color: #09d391;
 }
 .modal {
@@ -294,4 +270,10 @@ h1 {
     border-radius: 5px;
     cursor: pointer;
     margin-top: 10px;
+}
+
+@media (max-width: 1350px) {
+    .shrink {
+        transform: scale(calc(100vw / 1350)); /* Scale down based on screen width */
+    }
 }

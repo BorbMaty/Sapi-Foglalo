@@ -13,12 +13,7 @@ const levels = new Map([
         { name: "Bufe", class: "room nonclickable bufe" },
         { name: "111", class: "room r111"},
         { name: "112", class: "room r112"},
-        { name: "113", class: "room r113"},
-        { name: "", class: "room nonclickable placc"},
-        { name: "", class: "room nonclickable placc2"},
-        { name: "", class: "room nonclickable kalap"},
-        { name: "+", class: "leveling-button leveling-up"},
-        { name: "-", class: "leveling-button leveling-down"}
+        { name: "113", class: "room r113"}
         
     ]],
     [2, [
@@ -29,12 +24,7 @@ const levels = new Map([
         { name: "209", class: "room r209"},
         { name: "208", class: "room r208"},
         { name: "207", class: "room r207"},
-        { name: "Villamosmernoki Tanszek", class: "room nonclickable r223" },
-        { name: "", class: "room nonclickable placc"},
-        { name: "", class: "room nonclickable placc2"},
-        { name: "", class: "room nonclickable kalap"},
-        { name: "+", class: "leveling-button leveling-up"},
-        { name: "-", class: "leveling-button leveling-down"}
+        { name: "Villamosmernoki Tanszek", class: "room nonclickable r223" }
     ]],
     [3, [
         { name: "Room 301", class: "room" },
@@ -68,7 +58,21 @@ function replaceContent(level) {
         container.appendChild(roomDiv);
     });
 }
+
+function scaleContent() {
+    const container = document.querySelector('.shrink');
+    const widthScale = window.innerWidth / 1500; // Scale based on width
+    const heightScale = window.innerHeight / 700; // Scale based on height (600px is your original height)
+
+    const scale = Math.min(widthScale, heightScale); // Choose the smaller scale to fit within both dimensions
+    container.style.transform = `scale(${scale})`;
+    container.style.transformOrigin = 'top'; // Keep scaling consistent
+}
+
+window.onresize = scaleContent; // Recalculate scale on resize
+
 window.onload = function () {
+    scaleContent();
     replaceContent(1);
 };
 
@@ -129,3 +133,5 @@ function submitBooking() {
         alert("Please fill in all the details.");
     }
 }
+
+
