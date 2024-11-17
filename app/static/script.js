@@ -14,7 +14,6 @@ const levels = new Map([
         { name: "111", class: "room r111"},
         { name: "112", class: "room r112"},
         { name: "113", class: "room r113"}
-        
     ]],
     [2, [
         { name: "217", class: "room r217"},
@@ -24,20 +23,37 @@ const levels = new Map([
         { name: "209", class: "room r209"},
         { name: "208", class: "room r208"},
         { name: "207", class: "room r207"},
-        { name: "Villamosmernoki Tanszek", class: "room nonclickable r223" }
+        { name: "Villamosmernoki Tanszek", class: "room nonclickable r223" },
+        { name: "Aula", class: "room nonclickable aula" },
+        { name: "230", class: "room r230"},
+        { name: "231", class: "room r231"},
+        { name: "232", class: "room nonclickable r232"},
+        { name: "240", class: "room nonclickable r240"},
+        { name: "241", class: "room r241"},
+        { name: "242", class: "room r242"},
+        { name: "243", class: "room r243"}
     ]],
     [3, [
-        { name: "Room 301", class: "room" },
-        { name: "Room 302", class: "room" },
-        { name: "Library", class: "room library" }
+        // { name: "Room 301", class: "room" },
+        // { name: "Room 302", class: "room" },
+        // { name: "Library", class: "room library" }
+    ]],
+    [4, [
+        { name: "414", class: "room r414" },
+        { name: "415", class: "room r415" },
+        { name: "416", class: "room r416" },
+        { name: "417", class: "room r417" },
+        { name: "418", class: "room r418" },
+        { name: "412", class: "room nonclickable r412" },
+        { name: "413", class: "room nonclickable r413" },
+        { name: "411", class: "room r411" }
     ]]
 ]);
 function replaceContent(level) {
     const container = document.getElementsByClassName('blueprint')[0];
     container.innerHTML = '';  // Clear existing content
 
-    // Get the rooms for the specified level
-    const rooms = levels.get(level);
+    const rooms = levels.get(level); // Get the rooms for the specified level
 
     // Check if rooms exist for the given level
     if (!rooms) {
@@ -52,7 +68,7 @@ function replaceContent(level) {
         roomDiv.textContent = room.name;
 
          // Attach onclick only if the room is clickable
-        if (!room.class.includes('nonclickable') && !room.class.includes('leveling-button') && room.name) {
+        if (!room.class.includes('nonclickable') && room.name) {
             roomDiv.onclick = () => bookRoom(room.name);
         }
         container.appendChild(roomDiv);
@@ -61,8 +77,8 @@ function replaceContent(level) {
 
 function scaleContent() {
     const container = document.querySelector('.shrink');
-    const widthScale = window.innerWidth / 1500; // Scale based on width
-    const heightScale = window.innerHeight / 700; // Scale based on height (600px is your original height)
+    const widthScale = window.innerWidth / 1500;
+    const heightScale = window.innerHeight / 700;
 
     const scale = Math.min(widthScale, heightScale); // Choose the smaller scale to fit within both dimensions
     container.style.transform = `scale(${scale})`;
@@ -73,7 +89,7 @@ window.onresize = scaleContent; // Recalculate scale on resize
 
 window.onload = function () {
     scaleContent();
-    replaceContent(1);
+    replaceContent(1); // Loading the first floor on opening the site
 };
 
 let currentLevel = 1; // Start at level 1
@@ -94,7 +110,21 @@ function decreaseLevel() {
     }
 }
 
-// Function to open the booking modal with the selected room name
+const button_up = document.getElementsByClassName('leveling-up')[0];
+const button_down = document.getElementsByClassName('leveling-down')[0];
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === '+' && !event.shiftKey && !event.ctrlKey && !event.altKey) {
+        button_up.click();
+    }
+});
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === '-' && !event.shiftKey && !event.ctrlKey && !event.altKey) {
+        button_down.click();
+    }
+});
+
 function bookRoom(room) {
     // Ensure the room name is displayed in the appropriate element
     const roomNameElement = document.getElementById('roomName');
