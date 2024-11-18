@@ -7,7 +7,7 @@ from app.models.room import RoomDAL
 from app.models.room import Room
 from app.models.reserve import ReserveDAL
 from app.models.reserve import Reserve
-from datetime import date,time
+from datetime import date, time, datetime
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -31,6 +31,7 @@ app.include_router(router)
 # Create database tables
 Base.metadata.create_all(bind=engine)
 
+
 def main():
     db_session = Session()
     try:
@@ -39,31 +40,32 @@ def main():
         user_dal = UserDAL(db_session)
         reserves_dal = ReserveDAL(db_session)
 
+        # new_reservation = reserves_dal.create_reserve(
+        #     1,
+        #     114,
+        #     datetime.strptime("2024.11.12", "%Y.%m.%d").date(),
+        #     datetime.strptime("9.00", "%H.%M").time(),
+        #     datetime.strptime("11.00", "%H.%M").time()
+        # )
+        #
+        new_reservation = reserves_dal.create_reserve(
+            2,
+            114,
+            datetime.strptime("2024.11.12", "%Y.%m.%d").date(),
+            datetime.strptime("11.00", "%H.%M").time(),
+            datetime.strptime("12.00", "%H.%M").time()
+        )
 
-        # new_position = position_dal.create_position(position_id=1,name="Szamtech")
-        # new_position = position_dal.create_position(name="Auto")
+        # for i in range(12, 20):
+        #     reserves_dal.delete_reserve_by_id(i)
 
-        x = position_dal.get_all_positions()
-        print(x)
-
-        # Create a new RoomDAL instance and add a room
-        # new_room = room_dal.create_room(114)
-
-        # Create a user
-        # new_user = user_dal.create_user("matyi", "matyi@gmail.com",1,3)
-
-        # id = user_dal.get_id_by_name("matyi")
-        # print(id)
-
-        # new_reserve = reserves_dal.create_reserve(1, 114, "2024.11.05", 9, 11)
-        # #position_dal.delete_position(101)
-     
     except Exception as e:
         db_session.rollback()  # Rollback in case of an error
         print(f"An error occurred: {e}")
-        
+
     finally:
         db_session.close()  # Ensure the session is closed
+
 
 if __name__ == "__main__":
     main()

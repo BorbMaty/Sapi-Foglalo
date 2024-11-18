@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Date, Time, ForeignKey
+from sqlalchemy import Column, Integer, Date, Time, ForeignKey, and_
 from sqlalchemy.orm import relationship
 from app.database.database import Base
 from app.database.database import Session  # Use the correct absolute import
@@ -22,27 +22,71 @@ class ReserveDAL:
     def __init__(self, session: Session):  # type: ignore
         self.session = session
 
-    def create_reserve(self, user_id: int, room_id: int, reserve_date: date, start_hour: time, end_hour: time) -> Reserve:
-        new_reserve = Reserve(
-            UserId=user_id,
-            RoomId=room_id,
-            Date=reserve_date,
-            StartHour=start_hour,
-            EndHour=end_hour
-        )
-        self.session.add(new_reserve)
-        self.session.commit()
-        self.session.refresh(new_reserve)
-        return new_reserve
+    from datetime import time
+    from sqlalchemy import and_
+
+    from datetime import date, time
+
+    def is_free_in_this_interval(self, room_id: int, reserve_date: date, start_time: time, end_time: time) -> bool:
+        conflict = self.session.query(Reserve).filter(
+            Reserve.RoomId == room_id,
+            Reserve.Date == reserve_date,
+            and_(
+                Reserve.StartHour < end_time,
+                Reserve.EndHour > start_time
+            )
+        ).first()
+
+        return conflict is None
+
+    def create_reserve(self, user_id: int, room_id: int, reserve_date: date, start_hour: time,
+                       end_hour: time) -> Reserve:
+        if self.is_free_in_this_interval(room_id, reserve_date, start_hour, end_hour):
+            new_reserve = Reserve(
+                UserId=user_id,
+                RoomId=room_id,
+                Date=reserve_date,
+                StartHour=start_hour,
+                EndHour=end_hour
+            )
+            self.session.add(new_reserve)
+            self.session.commit()
+            self.session.refresh(new_reserve)
+            return new_reserve
+        else:
+            print(f"Room {room_id} is already reserved on {reserve_date} between {start_hour} and {end_hour}.")
+            return None
 
     def get_reserve_by_id(self, reserve_id: int) -> Reserve:
-        return self.session.query(Reserve).filter(Reserve.ReserveId == reserve_id).first()
+        reserve = self.session.query(Reserve).filter(Reserve.ReserveId == reserve_id).first()
+        if reserve:
+            print(
+                f"Reserve with ID {reserve.ReserveId}:\n- User ID: {reserve.UserId}\n- Room ID: {reserve.RoomId}\n- Date: {reserve.Date}\n- Start Hour: {reserve.StartHour}\n- End Hour: {reserve.EndHour}")
+        else:
+            print(f"No reserve found with ID {reserve_id}.")
+        return reserve
 
     def get_reserves_by_user(self, user_id: int) -> list[Reserve]:
-        return self.session.query(Reserve).filter(Reserve.UserId == user_id).all()
+        reserves = self.session.query(Reserve).filter(Reserve.UserId == user_id).all()
+        if reserves:
+            print(f"Reserves for User ID {user_id}:")
+            for reserve in reserves:
+                print(
+                    f"- Reserve ID: {reserve.ReserveId}, Room ID: {reserve.RoomId}, Date: {reserve.Date}, Start: {reserve.StartHour}, End: {reserve.EndHour}")
+        else:
+            print(f"No reserves found for User ID {user_id}.")
+        return reserves
 
     def get_reserves_by_room_and_date(self, room_id: int, reserve_date: date) -> list[Reserve]:
-        return self.session.query(Reserve).filter(Reserve.RoomId == room_id, Reserve.Date == reserve_date).all()
+        reserves = self.session.query(Reserve).filter(Reserve.RoomId == room_id, Reserve.Date == reserve_date).all()
+        if reserves:
+            print(f"Reserves for Room ID {room_id} on {reserve_date}:")
+            for reserve in reserves:
+                print(
+                    f"- Reserve ID: {reserve.ReserveId}, User ID: {reserve.UserId}, Start: {reserve.StartHour}, End: {reserve.EndHour}")
+        else:
+            print(f"No reserves found for Room ID {room_id} on {reserve_date}.")
+        return reserves
 
     def update_reserve(self, reserve_id: int, start_hour: time, end_hour: time) -> bool:
         reserve = self.get_reserve_by_id(reserve_id)
@@ -53,7 +97,8 @@ class ReserveDAL:
             return True
         return False
 
-    def delete_reserve(self, reserve_id: int) -> bool:
+    def delete_reserve_by_id(self, reserve_id: int) -> bool:
+        print("Deleted reservation:")
         reserve = self.get_reserve_by_id(reserve_id)
         if reserve:
             self.session.delete(reserve)

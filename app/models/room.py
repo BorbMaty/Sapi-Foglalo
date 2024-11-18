@@ -23,17 +23,23 @@ class RoomDAL:
         self.session.refresh(new_room)
         return new_room
 
-    def get_room_by_id(self, room_id: int) -> Room:
-        return self.session.query(Room).filter(Room.id == room_id).first()
-
     def get_all_rooms(self) -> list[Room]:
-        return self.session.query(Room).all()
+        rooms = self.session.query(Room).all()
+        if rooms:
+            print("All room IDs:")
+            for room in rooms:
+                print(f"- ID: {room.id}")
+        else:
+            print("No rooms found.")
+        return rooms
 
     def delete_room(self, room_id: int) -> bool:
-        room = self.get_room_by_id(room_id)
+        room = self.session.query(Room).filter(Room.id == room_id).first()
         if room:
             self.session.delete(room)
             self.session.commit()
             return True
-        return False
+        else:
+            return False
+
 
