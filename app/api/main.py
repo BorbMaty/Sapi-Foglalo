@@ -4,8 +4,19 @@ from app.api.users_router import users_router  # Correctly import 'users_router'
 from app.api.rooms_router import rooms_router
 from app.api.reserves_router import reserves_router
 from app.api.positions_router import positions_router
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+# Add CORS Middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # Frontend's development URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 # Include the routers with their respective prefixes and tags
 app.include_router(users_router, prefix="/users", tags=["Users"])
