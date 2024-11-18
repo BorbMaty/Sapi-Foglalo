@@ -32,6 +32,28 @@ async def create_reserve(reserve: ReserveCreate, reserve_dal: ReserveDAL = Depen
     )
     return ReserveResponse.from_orm(new_reserve)
 
+@reserves_router.post("/api/book-room", response_model=ReserveResponse)
+async def book_room(reserve: ReserveCreate, reserve_dal: ReserveDAL = Depends(get_reserve_dal)):
+    # Check if the room is already reserved for the given time
+    existing_reservation = reserve_dal.get_conflicting_reserve(
+        room_id=reserve.room_id,
+        reserve_date=reserve.date,
+        start_hour=reserve.start_hour,
+        end_hour=reserve.end_hour
+    )
+    if existing_reservation:
+        raise HTTPException(status_code=400, detail="Room is already reserved for the specified time.")
+
+    # Create the new reservation
+    new_reserve = reserve_dal.create_reserve(
+        user_id=reserve.user_id,
+        room_id=reserve.room_id,
+        reserve_date=reserve.date,
+        start_hour=reserve.start_hour,
+        end_hour=reserve.end_hour
+    )
+    return ReserveResponse.from_orm(new_reserve)
+
 @reserves_router.put("/{reserve_id}", response_model=ReserveResponse)
 async def update_reserve(reserve_id: int, reserve_data: ReserveCreate, reserve_dal: ReserveDAL = Depends(get_reserve_dal)):
     updated = reserve_dal.update_reserve(

@@ -129,3 +129,11 @@ class ReserveDAL:
             self.session.refresh(reserve)
             return True
         return False
+    
+    def get_conflicting_reserve(self, room_id, reserve_date, start_hour, end_hour):
+        return self.db.query(Reserve).filter(
+            Reserve.room_id == room_id,
+            Reserve.reserve_date == reserve_date,
+            Reserve.start_hour < end_hour,  # Check overlapping times
+            Reserve.end_hour > start_hour
+        ).first()

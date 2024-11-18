@@ -148,7 +148,6 @@ function closeModal() {
     document.getElementById('bookingModal').style.display = 'none';
 }
 
-// Function to simulate booking submission
 function submitBooking() {
     const name = document.getElementById('name').value;
     const date = document.getElementById('date').value;
@@ -156,12 +155,46 @@ function submitBooking() {
     const end_hour = document.getElementById('end_hour').value;
     const room = document.getElementById('roomName').textContent;
     
-    if (name && date) {
-        alert(`Room "${room}" booked successfully by ${name} on ${date} from ${start_hour} to ${end_hour}!`);
-        closeModal();
+    // Ensure all details are filled out
+    if (name && date && start_hour && end_hour) {
+        // Create the booking data object
+        const bookingData = {
+            room,
+            name,
+            date,
+            start_hour,
+            end_hour
+        };
+
+        // Log the data being sent for debugging
+        console.log('Sending booking data:', bookingData);
+
+        // Send the booking data to the backend
+        fetch('/api/book-room', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(bookingData),
+        })
+        .then(response => response.json()) // Parse the JSON response
+        .then(data => {
+            console.log('Server response:', data);
+            if (data.success) {
+                alert(data.message); // Show success message
+                closeModal(); // Close the modal on success
+            } else {
+                alert(`Failed to book room: ${data.message}`); // Show error message from the backend
+            }
+        })
+        .catch(error => {
+            console.error('Error during booking submission:', error);
+            alert('An error occurred while booking the room.');
+        });
     } else {
-        alert("Please fill in all the details.");
+        alert("Please fill in all the details."); // Show error if form is incomplete
     }
 }
+
 
 
