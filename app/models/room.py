@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer
 from sqlalchemy.orm import relationship
-from app.database import Base
-from app.database import Session  # Use the correct absolute import
+from app.database.database import Base
+from app.database.database import Session  # Use the correct absolute import
 
 
 class Room(Base):

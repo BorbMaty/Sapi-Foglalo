@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
-from app.database import Base
-from app.database import Base, Session  # Import both Base and Session
+from app.database.database import Base
+from app.database.database import Base, Session  # Import both Base and Session
 
 
 class Position(Base):

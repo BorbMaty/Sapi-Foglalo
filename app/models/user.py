@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
-from app.database import Base
-from app.database import Session  # Use the correct absolute import
+from app.database.database import Base
+from app.database.database import Session  # Use the correct absolute import
 
 
 class User(Base):
@@ -50,10 +50,16 @@ class UserDAL:
     def update_user(self, user_id: int, name: str = None, email: str = None, PositionId: int = None, year: int = None):
         user = self.get_user_by_id(user_id)
         if user:
-            user.name = name if name else user.name
-            user.email = email if email else user.email
-            user.PositionId = PositionId if PositionId else user.PositionId
-            user.year = year if year else user.year
+            # Make sure each field is updated individually without concatenation
+            if name is not None:
+                user.name = name
+            if email is not None:
+                user.email = email
+            if PositionId is not None:
+                user.PositionId = PositionId
+            if year is not None:
+                user.year = year
+
             self.db_session.commit()
             self.db_session.refresh(user)
         return user
@@ -68,3 +74,6 @@ class UserDAL:
     def get_id_by_name(self, name: str) -> int:
         user = self.db_session.query(User).filter(User.name == name).first()
         return user.id if user else None
+    
+    def get_user_by_email(self, email: str) -> User:
+        return self.db_session.query(User).filter(User.email == email).first()

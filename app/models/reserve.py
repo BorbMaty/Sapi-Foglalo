@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, Date, Time, ForeignKey, and_
 from sqlalchemy.orm import relationship
-from app.database import Base
-from app.database import Session  # Use the correct absolute import
+from app.database.database import Base
+from app.database.database import Session  # Use the correct absolute import
 from datetime import date,time
 
 
@@ -103,5 +103,29 @@ class ReserveDAL:
         if reserve:
             self.session.delete(reserve)
             self.session.commit()
+            return True
+        return False
+
+    def get_all_reserves(self) -> list[Reserve]:  # This is the method you're looking for
+        return self.session.query(Reserve).all()
+    
+    def update_reserve(self, reserve_id: int, **kwargs) -> bool:
+        reserve = self.get_reserve_by_id(reserve_id)
+        if reserve:
+            # Update fields only if provided in kwargs
+            if "user_id" in kwargs and kwargs["user_id"] is not None:
+                reserve.UserId = kwargs["user_id"]
+            if "room_id" in kwargs and kwargs["room_id"] is not None:
+                reserve.RoomId = kwargs["room_id"]
+            if "date" in kwargs and kwargs["date"] is not None:
+                reserve.Date = kwargs["date"]
+            if "start_hour" in kwargs and kwargs["start_hour"] is not None:
+                reserve.StartHour = kwargs["start_hour"]
+            if "end_hour" in kwargs and kwargs["end_hour"] is not None:
+                reserve.EndHour = kwargs["end_hour"]
+            
+            # Commit changes to the database and refresh the instance
+            self.session.commit()
+            self.session.refresh(reserve)
             return True
         return False
