@@ -13,14 +13,19 @@ h1 {
     color: #000;
     font-size: 30px;
 }
+
 .blueprint {
-    position: relative;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* Dynamic grid */
+    gap: 10px; /* Spacing between rooms */
     width: 1350px;
-    height: 600px;
+    height: auto; /* Let content define height */
     background-color: #fff;
     background-image: url("../images/old-cement-wall-texture.jpg");
     border: 10px solid black;
 }
+
+
 .outer, .shrink {
     height: auto;
     transform-origin: top;
