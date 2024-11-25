@@ -1,8 +1,12 @@
 # app/api/reserves_router.py
+from datetime import date
 from fastapi import APIRouter, HTTPException, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
 from app.schemas.reserve import ReserveCreate, ReserveResponse
-from app.models.reserve import ReserveDAL
+from app.models.reserve import Reserve, ReserveDAL
 from app.database import get_db
+from app.models.query_dal import QueryDAL
+from app.database.database import Session
 
 reserves_router = APIRouter()
 
@@ -72,3 +76,32 @@ async def delete_reserve(reserve_id: int, reserve_dal: ReserveDAL = Depends(get_
     if not reserve_deleted:
         raise HTTPException(status_code=404, detail="Reserve not found")
     return {"detail": "Reserve deleted successfully"}
+
+
+router = APIRouter(prefix="/reserves", tags=["Reserves"])
+
+@reserves_router.get("/reservations/{room_id}/{reservation_date}", response_model=list[ReserveResponse])
+def get_reservations_for_room(
+    room_id: int,
+    reservation_date: date,
+    db: Session = Depends(get_db)
+):
+    """
+    Fetch all reservations for a specific room on a given date.
+
+    Args:
+        room_id (int): The ID of the room.
+        reservation_date (date): The date for which reservations are requested.
+
+    Returns:
+        List of reservations for the room on the given date.
+    """
+    reservations = db.query(Reserve).filter(
+        Reserve.RoomId == room_id,
+        Reserve.Date == reservation_date
+    ).all()
+
+    if not reservations:
+        raise HTTPException(status_code=404, detail="No reservations found for the specified room and date.")
+
+    return reservations
