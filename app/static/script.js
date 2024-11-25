@@ -68,11 +68,11 @@ async function replaceContent(level) {
         return;
     }
 
-   // try {
+    try {
         // Fetch available rooms from the backend
-        //const response = await fetch(`${API_BASE_URL}/rooms`);
-        //if (!response.ok) throw new Error("Failed to fetch rooms.");
-        //const dbRooms = await response.json();
+        const response = await fetch(`${API_BASE_URL}/rooms`);
+        if (!response.ok) throw new Error("Failed to fetch rooms.");
+        const dbRooms = await response.json();
 
         // Create and append each room div
         rooms.forEach(room => {
@@ -87,9 +87,9 @@ async function replaceContent(level) {
 
             container.appendChild(roomDiv);
         });
-    //} catch (err) {
-   //     console.error("Error fetching rooms:", err);
-   // }
+    } catch (err) {
+        console.error("Error fetching rooms:", err);
+    }
 }
 
 // Function to open the booking modal
