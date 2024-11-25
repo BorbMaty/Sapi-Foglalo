@@ -9,13 +9,13 @@ const levels = new Map([
         { id: 129, name: "129", class: "room r129" },
         { id: 128, name: "128", class: "room r128" },
         { id: 127, name: "Gepeszmernoki Tanszek", class: "room nonclickable r127" },
-        { id: 126, name: "Aula", class: "room nonclickable aula" },
+        { id: 1, name: "Aula", class: "room nonclickable aula" },
         { id: 125, name: "114", class: "room r114" },
-        { id: 124, name: "Porta", class: "room nonclickable porta" },
-        { id: 123, name: "Bufe", class: "room nonclickable bufe" },
-        { id: 122, name: "111", class: "room r111" },
-        { id: 121, name: "112", class: "room r112" },
-        { id: 120, name: "113", class: "room r113" }
+        { id: 109, name: "Porta", class: "room nonclickable porta" },
+        { id: 134, name: "Bufe", class: "room nonclickable bufe" },
+        { id: 111, name: "111", class: "room r111" },
+        { id: 112, name: "112", class: "room r112" },
+        { id: 113, name: "113", class: "room r113" }
     ]],
     [2, [
         { id: 217, name: "217", class: "room r217" },
@@ -26,7 +26,7 @@ const levels = new Map([
         { id: 208, name: "208", class: "room r208" },
         { id: 207, name: "207", class: "room r207" },
         { id: 223, name: "Villamosmernoki Tanszek", class: "room nonclickable r223" },
-        { id: 222, name: "Aula", class: "room nonclickable aula" },
+        { id: 1, name: "Aula", class: "room nonclickable aula" },
         { id: 230, name: "230", class: "room r230" },
         { id: 231, name: "231", class: "room r231" },
         { id: 232, name: "232", class: "room nonclickable r232" },
@@ -68,11 +68,11 @@ async function replaceContent(level) {
         return;
     }
 
-    try {
+   // try {
         // Fetch available rooms from the backend
-        const response = await fetch(`${API_BASE_URL}/rooms`);
-        if (!response.ok) throw new Error("Failed to fetch rooms.");
-        const dbRooms = await response.json();
+        //const response = await fetch(`${API_BASE_URL}/rooms`);
+        //if (!response.ok) throw new Error("Failed to fetch rooms.");
+        //const dbRooms = await response.json();
 
         // Create and append each room div
         rooms.forEach(room => {
@@ -80,22 +80,22 @@ async function replaceContent(level) {
             roomDiv.className = room.class;
             roomDiv.textContent = room.name;
 
-            const isAvailable = dbRooms.some(dbRoom => dbRoom.id === room.id);
+           // const isAvailable = dbRooms.some(dbRoom => dbRoom.id === room.id);
             if (!room.class.includes('nonclickable')) {
                 roomDiv.onclick = () => openBookingModal(room.id);
             }
 
             container.appendChild(roomDiv);
         });
-    } catch (err) {
-        console.error("Error fetching rooms:", err);
-    }
+    //} catch (err) {
+   //     console.error("Error fetching rooms:", err);
+   // }
 }
 
 // Function to open the booking modal
 function openBookingModal(roomId) {
     document.getElementById('roomName').textContent = `${roomId}`;
-    document.getElementById('bookingModal').style.display = 'block';
+    document.getElementById('bookingModal').style.display = 'flex';
     document.getElementById('bookingForm').dataset.roomId = roomId; // Store the room ID in the form
 }
 
