@@ -79,8 +79,6 @@ async function replaceContent(level) {
             const roomDiv = document.createElement('div');
             roomDiv.className = room.class;
             roomDiv.textContent = room.name;
-
-            const isAvailable = dbRooms.some(dbRoom => dbRoom.id === room.id);
             if (!room.class.includes('nonclickable')) {
                 roomDiv.onclick = () => openBookingModal(room.id);
             }
