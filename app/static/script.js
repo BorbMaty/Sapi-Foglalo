@@ -98,6 +98,9 @@ function openBookingModal(roomId) {
     document.getElementById('bookingModal').style.display = 'flex';
     document.getElementById('bookingForm').dataset.roomId = roomId; // Store the room ID in the form
 }
+function query(){
+    document.getElementById('query').style.display = 'flex';
+}
 
 // Function to close the modal
 function closeModal() {
@@ -182,3 +185,18 @@ document.addEventListener('keydown', (event) => {
         decreaseLevel();
     }
 });
+
+const inputField = document.getElementById('date');
+
+// Trigger function to handle value change
+function onInputChange(event) {
+    const inputValue = event.target.value; // Get the current value of the input
+    if (inputValue) {
+        query();
+        outputMessage.textContent =`${inputValue}`;
+    }
+}
+
+// Attach the 'input' event listener to the input field
+inputField.addEventListener('input', onInputChange);
+
