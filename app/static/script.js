@@ -10,7 +10,7 @@ const levels = new Map([
         { id: 128, name: "128", class: "room r128" },
         { id: 127, name: "Gepeszmernoki Tanszek", class: "room nonclickable r127" },
         { id: 1, name: "Aula", class: "room nonclickable aula" },
-        { id: 125, name: "114", class: "room r114" },
+        { id: 114, name: "114", class: "room r114" },
         { id: 109, name: "Porta", class: "room nonclickable porta" },
         { id: 134, name: "Bufe", class: "room nonclickable bufe" },
         { id: 111, name: "111", class: "room r111" },
