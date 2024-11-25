@@ -320,6 +320,7 @@ h1 {
     width: 600px;
     height: 600px;
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    font-size: 25px;
     text-align: center;
 }
 .modal-content h2 {
