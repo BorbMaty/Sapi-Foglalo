@@ -15,6 +15,7 @@ class User(Base):
     
     position = relationship("Position", back_populates="users")
     reserves = relationship("Reserve", back_populates="user")
+    password = relationship("Password", back_populates="user", uselist=False)
 
 class UserDAL:
     def __init__(self, db_session: Session):  # type: ignore
