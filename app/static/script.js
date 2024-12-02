@@ -200,3 +200,43 @@ function onInputChange(event) {
 // Attach the 'input' event listener to the input field
 inputField.addEventListener('input', onInputChange);
 
+const bookings = {
+    foglalt: [
+        { start_hour: "10:00 AM", end_hour: "11:00 AM" },
+        { start_hour: "11:30 AM", end_hour: "12:30 PM" },
+        { start_hour: "1:00 PM", end_hour: "2:00 PM" },
+    ],
+    szabad: [
+        { start_hour: "2:30 PM", end_hour: "3:30 PM" },
+        { start_hour: "4:00 PM", end_hour: "5:00 PM" },
+        { start_hour: "5:30 PM", end_hour: "6:30 PM" },
+    ],
+};
+
+function populateBookings(containerSelector, data) {
+    const container = document.querySelector(containerSelector);
+    container.innerHTML = ""; // Clear existing content
+
+    data.forEach((booking) => {
+        const bookingDiv = document.createElement("div");
+        bookingDiv.classList.add("booking");
+
+        // Create and append the start time
+        const startTime = document.createElement("p");
+        startTime.innerHTML = `<strong>Start:</strong> ${booking.start_hour}`;
+        bookingDiv.appendChild(startTime);
+
+        // Create and append the end time
+        const endTime = document.createElement("p");
+        endTime.innerHTML = `<strong>End:</strong> ${booking.end_hour}`;
+        bookingDiv.appendChild(endTime);
+
+        // Append the booking div to the container
+        container.appendChild(bookingDiv);
+    });
+}
+
+// Populate the foglalt and szabad containers
+populateBookings(".foglalt", bookings.foglalt);
+populateBookings(".szabad", bookings.szabad);
+

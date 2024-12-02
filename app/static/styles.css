@@ -334,6 +334,7 @@ h1 {
     gap: 20px; /* Add spacing between the divs */
     justify-content: center; /* Center the divs horizontally */
     align-items: center; /* Center the divs vertically */
+    position:relative;
 }
 .modal-content {
     background: white;
@@ -390,28 +391,63 @@ h1 {
     font-size: 30px;
     margin-top:50px;
 }
-#outputMessage{
-    position:absolute;
+#outputMessage {
     font-size: 30px;
+    margin-bottom: 10px;
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #333;
+    font-weight: bold;
 }
 .foglalt, .szabad {
-    position: relative;
     height: 500px;
     width: 250px;
     display: flex;
     flex-direction: column;
+    overflow-y: auto; /* Add vertical scroll if content overflows */
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    scrollbar-width: thin; /* Customize scrollbar width for Firefox */
+    scrollbar-color: #aaa #fff; /* Scrollbar colors for Firefox */
 }
 
-.szabad {
-    background-color: #09d391;
+.foglalt::-webkit-scrollbar, .szabad::-webkit-scrollbar {
+    width: 10px; /* Width of the scrollbar */
+}
+
+.foglalt::-webkit-scrollbar-track, .szabad::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Track background */
+    border-radius: 8px;
+}
+
+.foglalt::-webkit-scrollbar-thumb, .szabad::-webkit-scrollbar-thumb {
+    background: #888; /* Scrollbar thumb color */
+    border-radius: 8px;
 }
 
 .foglalt {
     background-color: #0000003f;
 }
 
-/* @media (max-width: 1350px) {
-    .shrink {
-        transform: scale(calc(100vw / 1350));
-    }
-} */
+.szabad {
+    background-color: #09d391;
+}
+
+/* Booking style */
+.booking {
+    background: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 18px;
+    display: flex;
+    flex-direction: column;
+}
+
+.booking p {
+    margin: 5px 0;
+}
