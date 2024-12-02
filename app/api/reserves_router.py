@@ -78,7 +78,6 @@ async def delete_reserve(reserve_id: int, reserve_dal: ReserveDAL = Depends(get_
     return {"detail": "Reserve deleted successfully"}
 
 
-router = APIRouter(prefix="/reserves", tags=["Reserves"])
 
 @reserves_router.get("/reservations/{room_id}/{reservation_date}", response_model=list[ReserveResponse])
 def get_reservations_for_room(
