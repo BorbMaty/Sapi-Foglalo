@@ -28,7 +28,7 @@ app.include_router(reserves_router, prefix="/reserves", tags=["Reserves"])
 app.include_router(positions_router, prefix="/positions", tags=["Positions"])
 
 # Use the absolute path to the static directory
-app.mount("/static", StaticFiles(directory="/home/lucy/Szoft/RoomReserver/app/static"), name="static")
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
 app.mount("/images", StaticFiles(directory="app/images"), name="images")
 
 # API Endpoints
