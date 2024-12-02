@@ -10,7 +10,7 @@ const levels = new Map([
         { id: 128, name: "128", class: "room r128" },
         { id: 127, name: "Gepeszmernoki Tanszek", class: "room nonclickable r127" },
         { id: 1, name: "Aula", class: "room nonclickable aula" },
-        { id: 125, name: "114", class: "room r114" },
+        { id: 114, name: "114", class: "room r114" },
         { id: 109, name: "Porta", class: "room nonclickable porta" },
         { id: 134, name: "Bufe", class: "room nonclickable bufe" },
         { id: 111, name: "111", class: "room r111" },
@@ -69,7 +69,6 @@ async function replaceContent(level) {
     }
 
     try {
-        // Fetch available rooms from the backend
         const response = await fetch(`${API_BASE_URL}/rooms`);
         if (!response.ok) throw new Error("Failed to fetch rooms.");
         const dbRooms = await response.json();
@@ -97,6 +96,9 @@ function openBookingModal(roomId) {
     document.getElementById('roomName').textContent = `${roomId}`;
     document.getElementById('bookingModal').style.display = 'flex';
     document.getElementById('bookingForm').dataset.roomId = roomId; // Store the room ID in the form
+}
+function query(){
+    document.getElementById('query').style.display = 'flex';
 }
 
 // Function to close the modal
@@ -182,3 +184,58 @@ document.addEventListener('keydown', (event) => {
         decreaseLevel();
     }
 });
+
+const inputField = document.getElementById('date');
+
+// Trigger function to handle value change
+function onInputChange(event) {
+    const inputValue = event.target.value; // Get the current value of the input
+    if (inputValue) {
+        query();
+        outputMessage.textContent =`${inputValue}`;
+    }
+}
+
+// Attach the 'input' event listener to the input field
+inputField.addEventListener('input', onInputChange);
+
+const bookings = {
+    foglalt: [
+        { start_hour: "10:00 AM", end_hour: "11:00 AM" },
+        { start_hour: "11:30 AM", end_hour: "12:30 PM" },
+        { start_hour: "1:00 PM", end_hour: "2:00 PM" },
+    ],
+    szabad: [
+        { start_hour: "2:30 PM", end_hour: "3:30 PM" },
+        { start_hour: "4:00 PM", end_hour: "5:00 PM" },
+        { start_hour: "5:30 PM", end_hour: "6:30 PM" },
+    ],
+};
+
+function populateBookings(containerSelector, data) {
+    const container = document.querySelector(containerSelector);
+    container.innerHTML = ""; // Clear existing content
+
+    data.forEach((booking) => {
+        const bookingDiv = document.createElement("div");
+        bookingDiv.classList.add("booking");
+
+        // Create and append the start time
+        const startTime = document.createElement("p");
+        startTime.innerHTML = `<strong>Start:</strong> ${booking.start_hour}`;
+        bookingDiv.appendChild(startTime);
+
+        // Create and append the end time
+        const endTime = document.createElement("p");
+        endTime.innerHTML = `<strong>End:</strong> ${booking.end_hour}`;
+        bookingDiv.appendChild(endTime);
+
+        // Append the booking div to the container
+        container.appendChild(bookingDiv);
+    });
+}
+
+// Populate the foglalt and szabad containers
+populateBookings(".foglalt", bookings.foglalt);
+populateBookings(".szabad", bookings.szabad);
+
