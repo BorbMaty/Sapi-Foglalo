@@ -83,7 +83,7 @@ async def delete_reserve(reserve_id: int, reserve_dal: ReserveDAL = Depends(get_
 def get_reservations_for_room(
     room_id: int,
     reservation_date: date,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db) # type: ignore
 ):
     """
     Fetch all reservations for a specific room on a given date.

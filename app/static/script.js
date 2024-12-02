@@ -68,7 +68,7 @@ async function replaceContent(level) {
         return;
     }
 
-    try {
+   try {
         const response = await fetch(`${API_BASE_URL}/rooms`);
         if (!response.ok) throw new Error("Failed to fetch rooms.");
         const dbRooms = await response.json();
@@ -187,17 +187,20 @@ document.addEventListener('keydown', (event) => {
 
 const inputField = document.getElementById('date');
 
-// Trigger function to handle value change
 function onInputChange(event) {
-    const inputValue = event.target.value; // Get the current value of the input
-    if (inputValue) {
-        query();
-        outputMessage.textContent =`${inputValue}`;
+    const reservationDate = event.target.value; // Selected date
+    const roomId = document.getElementById('bookingForm').dataset.roomId; // Selected room ID
+
+    if (reservationDate && roomId) {
+        query(); // Display the query modal
+        populateBookings(roomId, reservationDate); // Fetch and display reservations
     }
 }
 
-// Attach the 'input' event listener to the input field
-inputField.addEventListener('input', onInputChange);
+document.getElementById('date').addEventListener('input', onInputChange);
+
+// // Attach the 'input' event listener to the input field
+// inputField.addEventListener('input', onInputChange);
 
 const bookings = {
     foglalt: [
@@ -212,30 +215,80 @@ const bookings = {
     ],
 };
 
-function populateBookings(containerSelector, data) {
-    const container = document.querySelector(containerSelector);
-    container.innerHTML = ""; // Clear existing content
+async function populateBookings(roomId, reservationDate) {
+    const foglaltContainer = document.querySelector(".foglalt");
+    const szabadContainer = document.querySelector(".szabad");
+    foglaltContainer.innerHTML = ""; // Clear previous data
+    szabadContainer.innerHTML = ""; // Clear previous data
 
-    data.forEach((booking) => {
-        const bookingDiv = document.createElement("div");
-        bookingDiv.classList.add("booking");
+    try {
+        const response = await fetch(`${API_BASE_URL}/reservations/${roomId}/${reservationDate}`);
+        if (!response.ok) throw new Error("Failed to fetch reservations");
 
-        // Create and append the start time
-        const startTime = document.createElement("p");
-        startTime.innerHTML = `<strong>Start:</strong> ${booking.start_hour}`;
-        bookingDiv.appendChild(startTime);
+        const reservations = await response.json();
 
-        // Create and append the end time
-        const endTime = document.createElement("p");
-        endTime.innerHTML = `<strong>End:</strong> ${booking.end_hour}`;
-        bookingDiv.appendChild(endTime);
+        // Populate occupied (foglalt) slots
+        reservations.forEach(reservation => {
+            const bookingDiv = document.createElement("div");
+            bookingDiv.classList.add("booking");
 
-        // Append the booking div to the container
-        container.appendChild(bookingDiv);
-    });
+            const startTime = document.createElement("p");
+            startTime.innerHTML = `<strong>Start:</strong> ${reservation.start_hour}`;
+            bookingDiv.appendChild(startTime);
+
+            const endTime = document.createElement("p");
+            endTime.innerHTML = `<strong>End:</strong> ${reservation.end_hour}`;
+            bookingDiv.appendChild(endTime);
+
+            foglaltContainer.appendChild(bookingDiv);
+        });
+
+        // Logic to calculate and display available slots (szabad)
+        const occupiedIntervals = reservations.map(reservation => ({
+            start: new Date(`1970-01-01T${reservation.start_hour}`),
+            end: new Date(`1970-01-01T${reservation.end_hour}`)
+        }));
+
+        const allDay = [
+            { start: new Date("1970-01-01T08:00"), end: new Date("1970-01-01T20:00") }
+        ];
+
+        const availableIntervals = allDay.flatMap(({ start, end }) => {
+            let freeSlots = [];
+            let currentStart = start;
+
+            for (const interval of occupiedIntervals) {
+                if (currentStart < interval.start) {
+                    freeSlots.push({ start: currentStart, end: interval.start });
+                }
+                currentStart = interval.end > currentStart ? interval.end : currentStart;
+            }
+
+            if (currentStart < end) {
+                freeSlots.push({ start: currentStart, end });
+            }
+            return freeSlots;
+        });
+
+        availableIntervals.forEach(interval => {
+            const bookingDiv = document.createElement("div");
+            bookingDiv.classList.add("booking");
+
+            const startTime = document.createElement("p");
+            startTime.innerHTML = `<strong>Start:</strong> ${interval.start.toTimeString().slice(0, 5)}`;
+            bookingDiv.appendChild(startTime);
+
+            const endTime = document.createElement("p");
+            endTime.innerHTML = `<strong>End:</strong> ${interval.end.toTimeString().slice(0, 5)}`;
+            bookingDiv.appendChild(endTime);
+
+            szabadContainer.appendChild(bookingDiv);
+        });
+
+    } catch (error) {
+        console.error("Error fetching reservations:", error);
+        foglaltContainer.innerHTML = "<p>No reservations found.</p>";
+        szabadContainer.innerHTML = "<p>Unable to determine free slots.</p>";
+    }
 }
-
-// Populate the foglalt and szabad containers
-populateBookings(".foglalt", bookings.foglalt);
-populateBookings(".szabad", bookings.szabad);
 
