@@ -1,11 +1,16 @@
 # app/api/users_router.py
 
+
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
-from app.schemas import UserResponse, LoginRequest
+from sqlalchemy.exc import SQLAlchemyError  # Fix: Import SQLAlchemyError
+from app.schemas import UserWithPasswordResponse
 from app.database import get_db
-from app.models.user import UserDAL
-from app.models.passwords import PasswordDAL, Password
+from app.models.user import User, UserDAL  # Fix: Import User model
+from app.models.passwords import Password, PasswordDAL  # Fix: Import Password model
+from app.schemas import UserResponse
+from app.schemas.password import LoginRequest
+
 
 password_router = APIRouter()
 
@@ -29,3 +34,32 @@ async def login(login_request: LoginRequest, user_dal: UserDAL = Depends(get_use
 
     # If login is successful, return the user details
     return user
+
+@password_router.get("/users-with-passwords", response_model=list[UserWithPasswordResponse])
+async def get_users_with_passwords(db: Session = Depends(get_db)):
+    """
+    Retrieves all users along with their associated passwords by performing
+    a JOIN between Users and Passwords tables.
+    """
+    try:
+        # Perform the join query
+        results = (
+            db.query(User, Password)
+            .join(Password, User.id == Password.userId)
+            .all()
+        )
+
+        # Map results into a structured response
+        users_with_passwords = [
+            UserWithPasswordResponse(
+                id=user.id,
+                name=user.name,
+                email=user.email,
+                password=password
+            )
+            for user, password in results
+        ]
+
+        return users_with_passwords
+    except SQLAlchemyError as e:
+        raise HTTPException(status_code=500, detail="Database query failed") from e

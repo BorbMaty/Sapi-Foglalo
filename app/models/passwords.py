@@ -13,7 +13,7 @@ class Password(Base):
     user = relationship("User", back_populates="password")
 
 class PasswordDAL:
-    def __init__(self, db: Session):
+    def __init__(self, db: Session): # type: ignore
         self.db = db
 
     def get_password_for_user(self, user_id: int):

@@ -12,3 +12,12 @@ class UserResponse(BaseModel):
     
     class Config:
         orm_mode = True
+
+class UserWithPasswordResponse(BaseModel):
+    id: int
+    name: str
+    email: str
+    password: str
+
+    class Config:
+        orm_mode = True
