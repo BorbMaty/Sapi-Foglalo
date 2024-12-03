@@ -34,14 +34,26 @@ CREATE TABLE Reserves (
                          FOREIGN KEY (RoomId) REFERENCES Rooms(id)
 );
 
+CREATE TABLE Passwords(
+    userId INT PRIMARY KEY,
+    password VARCHAR(255) NOT NULL,
+    FOREIGN KEY (UserId) REFERENCES Users(id)
+);
+
 
 # drop table Users;
 # drop table Reserves;
 # drop table Positions;
+drop table Passwords;
 
 select * from Positions;
 select * from Users;
 select * from Reserves;
 select * from Rooms;
+select * from Passwords;
 
-insert into positions(id, name) VALUES (100, "Tanar");
+select * from Users U join Passwords P on U.id = P.userId;
+
+# insert into positions(id, name) VALUES (100, "Tanar");
+# insert into Passwords(userId, password) VALUES (2, "jenooo");
+# insert into Passwords(userId, password) VALUES (1, "matyiii");
