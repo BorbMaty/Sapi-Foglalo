@@ -52,10 +52,62 @@ const levels = new Map([
     ]]
 ]);
 
+function query() {
+    const queryModal = document.getElementById("query");
+    queryModal.style.display = "flex"; // Ensure the query modal is visible
+}
+
+function calculateFreeSlots(reservations) {
+    const openingTime = 8; // Opening time in hours
+    const closingTime = 22; // Closing time in hours
+
+    const freeSlots = [];
+
+    // Handle no reservations scenario
+    if (reservations.length === 0) {
+        for (let time = openingTime; time < closingTime; time += 2) {
+            const end = Math.min(time + 2, closingTime); // Ensure it doesn’t exceed closing
+            freeSlots.push({ start: time, end: end });
+        }
+        return freeSlots; // Return free slots for the entire day
+    }
+
+    let lastEndTime = openingTime;
+
+    // Sort reservations by StartHour
+    reservations.sort((a, b) => a.StartHour.localeCompare(b.StartHour));
+
+    reservations.forEach(reservation => {
+        const reservationStart = parseInt(reservation.StartHour.split(":")[0]);
+        if (reservationStart > lastEndTime) {
+            // Divide the gap into 2-hour blocks
+            for (let time = lastEndTime; time < reservationStart; time += 2) {
+                const end = Math.min(time + 2, reservationStart); // Ensure it doesn’t overlap
+                freeSlots.push({ start: time, end: end });
+            }
+        }
+        lastEndTime = Math.max(lastEndTime, parseInt(reservation.EndHour.split(":")[0]));
+    });
+
+    // Handle the time from the last reservation to closing time
+    if (lastEndTime < closingTime) {
+        for (let time = lastEndTime; time < closingTime; time += 2) {
+            const end = Math.min(time + 2, closingTime); // Ensure it doesn’t exceed closing
+            freeSlots.push({ start: time, end: end });
+        }
+    }
+
+    return freeSlots;
+}
+
+
+
+
 
 let currentLevel = 1;
 const maxLevel = 4;
 const minLevel = 1;
+
 
 // Function to replace content for the selected level
 async function replaceContent(level) {
@@ -68,7 +120,7 @@ async function replaceContent(level) {
         return;
     }
 
-    try {
+   try {
         const response = await fetch(`${API_BASE_URL}/rooms`);
         if (!response.ok) throw new Error("Failed to fetch rooms.");
         const dbRooms = await response.json();
@@ -101,47 +153,13 @@ function query(){
     document.getElementById('query').style.display = 'flex';
 }
 
-// Function to close the modal
 function closeModal() {
     document.getElementById('bookingModal').style.display = 'none';
+    document.getElementById('query').style.display = 'none';
 }
 
-// Function to submit booking
-async function submitBooking() {
-    const roomId = document.getElementById('bookingForm').dataset.roomId;
-    const name = document.getElementById('name').value;
-    const date = document.getElementById('date').value;
-    const startHour = document.getElementById('start_hour').value;
-    const endHour = document.getElementById('end_hour').value;
 
-    const bookingData = {
-        user_id: 1, // Replace with dynamic user ID if available
-        room_id: parseInt(roomId),
-        date: date,
-        start_hour: startHour,
-        end_hour: endHour
-    };
 
-    try {
-        const response = await fetch(`${API_BASE_URL}/reserves`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(bookingData)
-        });
-
-        if (response.ok) {
-            alert("Booking successful!");
-        } else {
-            const error = await response.json();
-            alert(`Failed to book room: ${error.detail}`);
-        }
-    } catch (err) {
-        console.error("Error submitting booking:", err);
-        alert("An error occurred. Please try again.");
-    } finally {
-        closeModal();
-    }
-}
 
 // Level navigation functions
 function increaseLevel() {
@@ -187,55 +205,134 @@ document.addEventListener('keydown', (event) => {
 
 const inputField = document.getElementById('date');
 
-// Trigger function to handle value change
 function onInputChange(event) {
-    const inputValue = event.target.value; // Get the current value of the input
-    if (inputValue) {
-        query();
-        outputMessage.textContent =`${inputValue}`;
+    const reservationDate = event.target.value; // Selected date
+    const roomId = document.getElementById('bookingForm').dataset.roomId; // Selected room ID
+
+    if (reservationDate && roomId) {
+        query(); // Display the query modal
+        populateBookings(roomId, reservationDate); // Fetch and display reservations
     }
 }
 
-// Attach the 'input' event listener to the input field
-inputField.addEventListener('input', onInputChange);
+document.getElementById('date').addEventListener('input', onInputChange);
 
-const bookings = {
-    foglalt: [
-        { start_hour: "10:00 AM", end_hour: "11:00 AM" },
-        { start_hour: "11:30 AM", end_hour: "12:30 PM" },
-        { start_hour: "1:00 PM", end_hour: "2:00 PM" },
-    ],
-    szabad: [
-        { start_hour: "2:30 PM", end_hour: "3:30 PM" },
-        { start_hour: "4:00 PM", end_hour: "5:00 PM" },
-        { start_hour: "5:30 PM", end_hour: "6:30 PM" },
-    ],
-};
+function onInputChange(event) {
+    const reservationDate = event.target.value; // Selected date
+    const roomId = document.getElementById('bookingForm').dataset.roomId; // Selected room ID
 
-function populateBookings(containerSelector, data) {
-    const container = document.querySelector(containerSelector);
-    container.innerHTML = ""; // Clear existing content
-
-    data.forEach((booking) => {
-        const bookingDiv = document.createElement("div");
-        bookingDiv.classList.add("booking");
-
-        // Create and append the start time
-        const startTime = document.createElement("p");
-        startTime.innerHTML = `<strong>Start:</strong> ${booking.start_hour}`;
-        bookingDiv.appendChild(startTime);
-
-        // Create and append the end time
-        const endTime = document.createElement("p");
-        endTime.innerHTML = `<strong>End:</strong> ${booking.end_hour}`;
-        bookingDiv.appendChild(endTime);
-
-        // Append the booking div to the container
-        container.appendChild(bookingDiv);
-    });
+    if (reservationDate && roomId) {
+        query(); // Show the query modal
+        populateBookings(roomId, reservationDate); // Fetch and display reservations
+    }
 }
 
-// Populate the foglalt and szabad containers
-populateBookings(".foglalt", bookings.foglalt);
-populateBookings(".szabad", bookings.szabad);
+// Function to submit booking
+async function submitBooking() {
+    const roomId = document.getElementById('bookingForm').dataset.roomId;
+    const name = document.getElementById('name').value;
+    const date = document.getElementById('date').value;
+    const startHour = document.getElementById('start_hour').value;
+    const endHour = document.getElementById('end_hour').value;
+
+    const bookingData = {
+        user_id: 1, // Replace with dynamic user ID if available
+        room_id: parseInt(roomId),
+        date: date,
+        start_hour: startHour,
+        end_hour: endHour
+    };
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/reserves`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(bookingData)
+        });
+
+        if (response.ok) {
+            alert("Booking successful!");
+        } else {
+            const error = await response.json();
+            alert(`Failed to book room: ${error.detail}`);
+        }
+    } catch (err) {
+        console.error("Error submitting booking:", err);
+        alert("An error occurred. Please try again.");
+    } finally {
+        closeModal();
+    }
+}
+async function populateBookings(roomId, reservationDate) {
+    const foglaltContainer = document.querySelector(".foglalt");
+    const szabadContainer = document.querySelector(".szabad");
+    foglaltContainer.innerHTML = ""; // Clear previous data
+    szabadContainer.innerHTML = ""; // Clear previous data
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/reserves/${roomId}/${reservationDate}`);
+        if (!response.ok) throw new Error(`Failed to fetch reservations: ${response.statusText}`);
+
+        const reservations = await response.json();
+        console.log("Fetched reservations:", reservations); // Debug API response
+
+        // Handle no reservations
+        if (reservations.length === 0) {
+            // Message for no bookings
+            foglaltContainer.innerHTML = `<p style="text-align: center; margin: 10px;">No bookings yet</p>`;
+
+            // Message for free slots for the whole day
+            szabadContainer.innerHTML = `<p style="text-align: center; margin: 10px;">Free for the whole day</p>`;
+            return;
+        }
+
+        // Display reserved (foglalt) slots
+        reservations.forEach(reservation => {
+            const bookingDiv = document.createElement("div");
+            bookingDiv.classList.add("booking");
+
+            const userName = document.createElement("p");
+            userName.innerHTML = `<strong>Name:</strong> ${reservation.user.name || "N/A"}`;
+            bookingDiv.appendChild(userName);
+
+            const startTime = document.createElement("p");
+            startTime.innerHTML = `<strong>Start:</strong> ${reservation.StartHour.slice(0, 5) || "N/A"}`;
+            bookingDiv.appendChild(startTime);
+
+            const endTime = document.createElement("p");
+            endTime.innerHTML = `<strong>End:</strong> ${reservation.EndHour.slice(0, 5) || "N/A"}`;
+            bookingDiv.appendChild(endTime);
+
+            foglaltContainer.appendChild(bookingDiv);
+        });
+
+        // Calculate and display free (szabad) slots
+        const freeSlots = calculateFreeSlots(reservations);
+        if (freeSlots.length === 0) {
+            szabadContainer.innerHTML = `<p style="text-align: center; margin: 10px;">No free slots available</p>`;
+        } else {
+            freeSlots.forEach(slot => {
+                const freeSlotDiv = document.createElement("div");
+                freeSlotDiv.classList.add("booking");
+
+                const startTime = document.createElement("p");
+                startTime.innerHTML = `<strong>Start:</strong> ${slot.start}:00`;
+                freeSlotDiv.appendChild(startTime);
+
+                const endTime = document.createElement("p");
+                endTime.innerHTML = `<strong>End:</strong> ${slot.end}:00`;
+                freeSlotDiv.appendChild(endTime);
+
+                szabadContainer.appendChild(freeSlotDiv);
+            });
+        }
+    } catch (error) {
+        console.error("Error fetching reservations:", error);
+        foglaltContainer.innerHTML = `<p style="text-align: center; margin: 10px;">Failed to load reservations. Please try again later.</p>`;
+        szabadContainer.innerHTML = `<p style="text-align: center; margin: 10px;">Unable to determine free slots.</p>`;
+    }
+}
+
+
+
 
