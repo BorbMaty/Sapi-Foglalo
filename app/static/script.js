@@ -280,6 +280,7 @@ async function submitBooking() {
     }
 }
 
+
 async function populateBookings(roomId, reservationDate) {
     const foglaltContainer = document.querySelector(".foglalt");
     const szabadContainer = document.querySelector(".szabad");
