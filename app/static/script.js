@@ -227,7 +227,6 @@ function onInputChange(event) {
     }
 }
 
-// Function to submit booking
 async function submitBooking() {
     const roomId = document.getElementById('bookingForm').dataset.roomId;
     const name = document.getElementById('name').value;
@@ -235,8 +234,25 @@ async function submitBooking() {
     const startHour = document.getElementById('start_hour').value;
     const endHour = document.getElementById('end_hour').value;
 
+    let userId;
+    try {
+        // Fetch the user ID by name
+        const userIdResponse = await fetch(`${API_BASE_URL}/users/user-id/${encodeURIComponent(name)}`);
+        if (!userIdResponse.ok) {
+            const error = await userIdResponse.json();
+            alert(`Error retrieving user ID: ${error.detail}`);
+            return; // Stop if we can't get the user ID
+        }
+        const userData = await userIdResponse.json();
+        userId = userData.user_id;
+    } catch (err) {
+        console.error("Error fetching user ID:", err);
+        alert("An error occurred while fetching user ID. Please try again.");
+        return;
+    }
+
     const bookingData = {
-        user_id: 1, // Replace with dynamic user ID if available
+        user_id: userId,
         room_id: parseInt(roomId),
         date: date,
         start_hour: startHour,
@@ -263,6 +279,7 @@ async function submitBooking() {
         closeModal();
     }
 }
+
 async function populateBookings(roomId, reservationDate) {
     const foglaltContainer = document.querySelector(".foglalt");
     const szabadContainer = document.querySelector(".szabad");
