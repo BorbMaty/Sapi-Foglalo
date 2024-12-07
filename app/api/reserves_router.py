@@ -2,6 +2,7 @@
 from datetime import date
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
+from app.models.user import User
 from app.schemas.reserve import ReserveCreate, ReserveResponse
 from app.models.reserve import Reserve, ReserveDAL
 from app.database import get_db
@@ -103,3 +104,13 @@ def get_reservations_for_room(
     # Return an empty list instead of raising an exception
     return reservations
 
+@reserves_router.get("/reserves/user/{username}", response_model=list[ReserveResponse])
+def get_user_reserves(username: str, session: Session = Depends(get_db)):
+    # Initialize the DAL with the session
+    dal = ReserveDAL(session)
+
+    # Get the reserves for the specified username
+    reserves = dal.get_reserves_by_username(username)
+
+    # Return the list of reserves
+    return reserves
