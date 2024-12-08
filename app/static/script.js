@@ -36,9 +36,15 @@ const levels = new Map([
         { id: 243, name: "243", class: "room r243" }
     ]],
     [3, [
-        { id: 301, name: "Room 301", class: "room r301" },
-        { id: 302, name: "Room 302", class: "room r302" },
-        { id: 303, name: "Library", class: "room library" }
+        { id: 317, name: "317", class: "room r317" },
+        { id: 316, name: "316", class: "room r316" },
+        { id: 313, name: "313", class: "room r313" },
+        { id: 312, name: "312", class: "room r312" },
+        { id: 309, name: "309", class: "room r309" },
+        { id: 308, name: "308", class: "room r308" },
+        { id: 307, name: "307", class: "room r307" },
+        { id: 330, name: "330", class: "room nonclickable r330" },
+        { id: 337, name: "337", class: "room nonclickable r337" }
     ]],
     [4, [
         { id: 414, name: "414", class: "room r414" },
@@ -68,10 +74,10 @@ async function replaceContent(level) {
         return;
     }
 
-    try {
-        const response = await fetch(`${API_BASE_URL}/rooms`);
-        if (!response.ok) throw new Error("Failed to fetch rooms.");
-        const dbRooms = await response.json();
+    // try {
+    //     const response = await fetch(`${API_BASE_URL}/rooms`);
+    //     if (!response.ok) throw new Error("Failed to fetch rooms.");
+    //     const dbRooms = await response.json();
 
         // Create and append each room div
         rooms.forEach(room => {
@@ -86,9 +92,9 @@ async function replaceContent(level) {
 
             container.appendChild(roomDiv);
         });
-    } catch (err) {
-        console.error("Error fetching rooms:", err);
-    }
+    // } catch (err) {
+    //     console.error("Error fetching rooms:", err);
+    // }
 }
 
 // Function to open the booking modal
@@ -161,11 +167,14 @@ function decreaseLevel() {
 // Page scaling
 function scaleContent() {
     const container = document.querySelector('.shrink');
+    const modal = document.querySelector('.modal');
     const widthScale = window.innerWidth / 1500;
     const heightScale = window.innerHeight / 700;
     const scale = Math.min(widthScale, heightScale);
     container.style.transform = `scale(${scale})`;
     container.style.transformOrigin = 'top';
+    // modal.style.transform = `scale(${scale})`;
+    // modal.style.transformOrigin = 'left';
 }
 
 window.onresize = scaleContent;
@@ -204,6 +213,21 @@ const bookings = {
         { start_hour: "10:00 AM", end_hour: "11:00 AM" },
         { start_hour: "11:30 AM", end_hour: "12:30 PM" },
         { start_hour: "1:00 PM", end_hour: "2:00 PM" },
+        { start_hour: "10:00 AM", end_hour: "11:00 AM" },
+        { start_hour: "11:30 AM", end_hour: "12:30 PM" },
+        { start_hour: "1:00 PM", end_hour: "2:00 PM" },
+        { start_hour: "10:00 AM", end_hour: "11:00 AM" },
+        { start_hour: "11:30 AM", end_hour: "12:30 PM" },
+        { start_hour: "1:00 PM", end_hour: "2:00 PM" },
+        { start_hour: "10:00 AM", end_hour: "11:00 AM" },
+        { start_hour: "11:30 AM", end_hour: "12:30 PM" },
+        { start_hour: "1:00 PM", end_hour: "2:00 PM" },
+        { start_hour: "10:00 AM", end_hour: "11:00 AM" },
+        { start_hour: "11:30 AM", end_hour: "12:30 PM" },
+        { start_hour: "1:00 PM", end_hour: "2:00 PM" },
+        { start_hour: "10:00 AM", end_hour: "11:00 AM" },
+        { start_hour: "11:30 AM", end_hour: "12:30 PM" },
+        { start_hour: "1:00 PM", end_hour: "2:00 PM" },
     ],
     szabad: [
         { start_hour: "2:30 PM", end_hour: "3:30 PM" },
@@ -222,12 +246,12 @@ function populateBookings(containerSelector, data) {
 
         // Create and append the start time
         const startTime = document.createElement("p");
-        startTime.innerHTML = `<strong>Start:</strong> ${booking.start_hour}`;
+        startTime.innerHTML = `<strong></strong> ${booking.start_hour}`;
         bookingDiv.appendChild(startTime);
 
         // Create and append the end time
         const endTime = document.createElement("p");
-        endTime.innerHTML = `<strong>End:</strong> ${booking.end_hour}`;
+        endTime.innerHTML = `<strong></strong> ${booking.end_hour}`;
         bookingDiv.appendChild(endTime);
 
         // Append the booking div to the container

@@ -257,6 +257,62 @@ h1 {
     top: 520px;
     left: 460px;
 }
+
+.r317 {
+    width: 130px;
+    height: 140px;
+    top: 20px;
+    left: 780px;
+}
+.r316 {
+    width: 130px;
+    height: 140px;
+    top: 20px;
+    left: 640px;
+}
+.r313 {
+    width: 110px;
+    height: 140px;
+    top: 20px;
+    left: 520px;
+}
+.r312 {
+    width: 130px;
+    height: 140px;
+    top: 20px;
+    left: 380px;
+}
+.r309 {
+    width: 110px;
+    height: 140px;
+    top: 20px;
+    left: 260px;
+}
+.r308 {
+    width: 130px;
+    height: 140px;
+    top: 20px;
+    left: 100px;
+}
+.r307 {
+    width: 70px;
+    height: 140px;
+    top: 20px;
+    left: 20px;
+}
+.r330 {
+    width: 300px;
+    height: 130px;
+    top: 450px;
+    left: 1030px;
+}
+.r337 {
+    width: 200px;
+    height: 130px;
+    top: 450px;
+    left: 810px;
+}
+
 .r414, .r415, .r416, .r417, .r418, .r413, .r412, .r411 {
     width: 140px;
     height: 140px;
@@ -305,127 +361,103 @@ h1 {
 .modal {
     display: none;
     position: fixed;
-    width: 100%;
-    height: 100%;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
     background: rgba(0, 0, 0, 0.5);
     align-items: center;
-    justify-content: left;
-    padding: 20px;
+    justify-content: center; /* Center modal horizontally and vertically */
+    padding: 10px; /* Reduce padding for smaller screens */
     box-sizing: border-box;
+    z-index: 1000; /* Ensure it stays on top */
 }
-.query {
-    display: none;
-    justify-content: right;
-    margin-left:auto;
-}
-.query-content {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 600px;
-    height: 600px;
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
-    font-size: 25px;
-    text-align: center;
 
-    /* Add flexbox properties */
-    display: flex;
-    flex-direction: row; /* Arrange children in a row */
-    gap: 20px; /* Add spacing between the divs */
-    justify-content: center; /* Center the divs horizontally */
-    align-items: center; /* Center the divs vertically */
-    position:relative;
-}
 .modal-content {
     background: white;
     padding: 20px;
     border-radius: 8px;
-    width: 600px;
-    height: 600px;
+    width: 90%; /* Default to 90% of viewport width */
+    max-width: 400px; /* Limit the maximum width */
+    height: auto; /* Adjust height dynamically */
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
-    font-size: 25px;
+    font-size: 1.2em; /* Use relative font sizes */
     text-align: center;
 }
-.modal-content input{
-    font-size: 25px;
-    padding:5px;
-    margin-top:10px;
+
+.modal-content input,
+.modal-content label {
+    font-size: 1rem;
+    width: 100%; /* Inputs take full width */
+    box-sizing: border-box;
 }
-.modal-content label{
-    margin:30px;
-}
+
 .modal-content h2 {
-    margin-top: 25px;
-    margin-bottom: 50px;
+    font-size: 1.5rem;
+    margin: 20px 0;
 }
-.close-btn {
-    background: #ff6565;
-    color: white;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 30px;
-    padding:10px;
-    margin-top:50px;
-}
+
+.close-btn,
 .submit-btn {
-    background: #17750b;
-    color: white;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
-    font-size: 30px;
-    margin-top:50px;
+    font-size: 1rem;
+    padding: 10px 15px;
+    width: 45%; /* Buttons take half width */
+    margin: 10px 2.5%; /* Add spacing between buttons */
 }
-.query-btn {
-    background: #849e10;
-    color: white;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
-    font-size: 30px;
-    margin-top:50px;
+
+.query {
+    box-sizing: border-box;
+    z-index: 1000; /* Ensure it stays on top */
+    display: none;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto; /* Center align query content */
 }
+
+.query-content {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    width: 90%; /* Responsive width */
+    max-width: 600px; /* Limit maximum width */
+    height: auto; /* Adjust height dynamically */
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    font-size: 1rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column; /* Stack outputMessage above the divs */
+    gap: 20px; /* Add spacing between elements */
+    align-items: center; /* Center the entire content horizontally */
+    position: relative;
+}
+
 #outputMessage {
-    font-size: 30px;
-    margin-bottom: 10px;
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
+    font-size: 1.2rem;
     color: #333;
     font-weight: bold;
+    width: 100%; /* Take full width of the container */
+    text-align: center; /* Center the text horizontally */
 }
+
+.query-inner {
+    display: flex; /* Arrange child elements side by side */
+    justify-content: space-between; /* Add space between the two divs */
+    gap: 10px; /* Ensure spacing between the divs */
+    width: 100%; /* Full width of the container */
+}
+
 .foglalt, .szabad {
-    height: 500px;
-    width: 250px;
+    height: auto; /* Uniform height */
+    flex: 1; /* Allow divs to grow and take equal space */
+    /* max-width: 45%; Prevent divs from becoming too wide */
     display: flex;
     flex-direction: column;
-    overflow-y: auto; /* Add vertical scroll if content overflows */
+    overflow-y: auto; /* Add vertical scrolling if content exceeds height */
     padding: 10px;
     box-sizing: border-box;
     border-radius: 5px;
-    scrollbar-width: thin; /* Customize scrollbar width for Firefox */
-    scrollbar-color: #aaa #fff; /* Scrollbar colors for Firefox */
-}
-
-.foglalt::-webkit-scrollbar, .szabad::-webkit-scrollbar {
-    width: 10px; /* Width of the scrollbar */
-}
-
-.foglalt::-webkit-scrollbar-track, .szabad::-webkit-scrollbar-track {
-    background: #f1f1f1; /* Track background */
-    border-radius: 8px;
-}
-
-.foglalt::-webkit-scrollbar-thumb, .szabad::-webkit-scrollbar-thumb {
-    background: #888; /* Scrollbar thumb color */
-    border-radius: 8px;
+    scrollbar-width: thin;
+    scrollbar-color: #aaa #fff;
 }
 
 .foglalt {
@@ -435,6 +467,44 @@ h1 {
 .szabad {
     background-color: #09d391;
 }
+
+/* Adjustments for smaller screens */
+@media (max-width: 768px) {
+    .modal-content,
+    .query-content {
+        width: 95%; /* Use more of the screen width */
+        height: auto;
+    }
+
+    .foglalt, .szabad {
+        width: 100%; /* Full width for small screens */
+        height: 200px; /* Adjust height for smaller screens */
+    }
+
+    .close-btn,
+    .submit-btn {
+        font-size: 0.9rem;
+        padding: 8px 10px;
+        width: 100%; /* Full-width buttons */
+    }
+
+    #outputMessage {
+        font-size: 1rem;
+        top: 10px;
+    }
+}
+
+/* Adjustments for larger screens */
+@media (min-width: 1200px) {
+    .modal-content, .query-content {
+        max-width: 600px; /* Increase max width for larger screens */
+    }
+
+    .foglalt, .szabad {
+        height: 400px; /* Larger height for larger screens */
+    }
+}
+
 
 /* Booking style */
 .booking {
