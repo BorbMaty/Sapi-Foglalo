@@ -35,3 +35,9 @@ class ReserveResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class MinimalReserveResponse(BaseModel):
+    room: int
+    date: date
+    start_time: time
+    end_time: time
