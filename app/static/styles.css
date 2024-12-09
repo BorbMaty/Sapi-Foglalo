@@ -65,6 +65,33 @@ h1 {
     gap: 15px; /* Add space between reservations */
     position: relative;
 }
+.reservation-content input{
+    position:absolute;
+    width:50%;
+    font-size:20px;
+    margin-left: 50px;
+}
+.reservation-content label{
+    font-size: 20px;
+}
+.name-submit-button{
+    padding: 5px 15px;
+    font-size: 15px;
+    color: black;
+    background-color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 200px;
+    transition: transform 0.2s;
+    font-size: 20px;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    position:absolute;
+    margin-left: 400px;
+    top:15px;
+}
+.name-submit-button:hover{
+    transform: scale(1.05);
+}
 .reservation-item {
     padding: 10px;
     background: #f9f9f9;

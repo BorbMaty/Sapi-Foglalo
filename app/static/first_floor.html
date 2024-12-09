@@ -53,12 +53,9 @@
     </div>
     <div class="your-reservations">
         <div class="reservation-content">
-            <!-- <div class="reservation-item">
-                <p><strong>Reservation ID:</strong> ${reservation.id}</p>
-                <p><strong>Date:</strong> ${reservation.date}</p>
-                <p><strong>Room:</strong> ${reservation.room}</p>
-                <button class="delete-button", onclick="deleteReservation(${index})">Delete</button>
-            </div>
+            <label for="name">Nev:</label>
+            <input type="text" id="name-reservations" name="name-reservations" required>
+            <button class="name-submit-button", onclick="submitName()">List</button>
             <div class="reservation-item">
                 <p><strong>Reservation ID:</strong> ${reservation.id}</p>
                 <p><strong>Date:</strong> ${reservation.date}</p>
@@ -82,7 +79,13 @@
                 <p><strong>Date:</strong> ${reservation.date}</p>
                 <p><strong>Room:</strong> ${reservation.room}</p>
                 <button class="delete-button", onclick="deleteReservation(${index})">Delete</button>
-            </div> -->
+            </div>
+            <div class="reservation-item">
+                <p><strong>Reservation ID:</strong> ${reservation.id}</p>
+                <p><strong>Date:</strong> ${reservation.date}</p>
+                <p><strong>Room:</strong> ${reservation.room}</p>
+                <button class="delete-button", onclick="deleteReservation(${index})">Delete</button>
+            </div>
             <button type="button" class="close-btn" onclick="loadReservations()">Cancel</button>
         </div>
     </div>
