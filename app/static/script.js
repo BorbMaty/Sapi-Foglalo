@@ -186,11 +186,11 @@ function scaleContent() {
     container.style.transformOrigin = 'top';
 }
 
-//window.onresize = scaleContent;
+window.onresize = scaleContent;
 
 // Initialize the page
 window.onload = function () {
-    //scaleContent();
+    scaleContent();
     replaceContent(currentLevel); // Load the first level
 };
 

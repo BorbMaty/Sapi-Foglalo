@@ -105,7 +105,7 @@ def get_reservations_for_room(
     return reservations
 
 @reserves_router.get("/reserves/user/{username}", response_model=list[ReserveResponse])
-def get_user_reserves(username: str, session: Session = Depends(get_db)):
+def get_user_reserves(username: str, session: Session = Depends(get_db)): #type:ignore
     # Initialize the DAL with the session
     dal = ReserveDAL(session)
 
