@@ -42,23 +42,22 @@ async def get_users_with_passwords(db: Session = Depends(get_db)):
     a JOIN between Users and Passwords tables.
     """
     try:
-        # Perform the join query
         results = (
-            db.query(User, Password)
-            .join(Password, User.id == Password.userId)
-            .all()
-        )
+        db.query(User, Password.password)
+        .join(Password, User.id == Password.userId)
+        .all()
+    )
 
-        # Map results into a structured response
         users_with_passwords = [
-            UserWithPasswordResponse(
-                id=user.id,
-                name=user.name,
-                email=user.email,
-                password=password
-            )
-            for user, password in results
-        ]
+        UserWithPasswordResponse(
+            id=user.id,
+            name=user.name,
+            email=user.email,
+            password=password  # Now this is the `password` string, not the object
+        )
+        for user, password in results
+    ]
+
 
         return users_with_passwords
     except SQLAlchemyError as e:
