@@ -15,7 +15,7 @@ class User(Base):
     
     position = relationship("Position", back_populates="users")
     reserves = relationship("Reserve", back_populates="user")
-    password = relationship("Password", back_populates="user", uselist=False)
+    password = relationship("Password", back_populates="user")
 
 class UserDAL:
     def __init__(self, db_session: Session):  # type: ignore
@@ -77,4 +77,15 @@ class UserDAL:
         return user.id if user else None
     
     def get_user_by_email(self, email: str) -> User:
-        return self.db_session.query(User).filter(User.email == email).first()
+        try:
+            user = self.db_session.query(User).filter(User.email.ilike(email)).first()
+            if user:
+                print(f"Retrieved user: ID = {user.id}, Name = {user.name}")
+            else:
+                print(f"No user found with email {email}.")
+            return user
+        except Exception as e:
+            print(f"Error while fetching user by email {email}: {e}")
+            raise
+
+

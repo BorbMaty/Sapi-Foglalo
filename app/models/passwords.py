@@ -17,8 +17,17 @@ class PasswordDAL:
         self.db = db
 
     def get_password_for_user(self, user_id: int):
-        """Fetch the password entry for a given user."""
-        return self.db.query(Password).filter(Password.userId == user_id).first()
+        try:
+            password_entry = self.db.query(Password).filter(Password.userId == user_id).first()
+            if password_entry:
+                print(f"Retrieved password for user ID = {user_id}")
+            else:
+                print(f"No password entry found for user ID = {user_id}")
+            return password_entry
+        except Exception as e:
+            print(f"Error while fetching password for user ID {user_id}: {e}")
+            raise
+
 
     def verify_password(self, user_id: int, password: str) -> bool:
         """Verify the provided password matches the stored password."""

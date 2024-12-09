@@ -6,7 +6,8 @@ class LoginRequest(BaseModel):
 
 class UserResponse(BaseModel):
     id: int
-    username: str
+    # username: str
+    name: str
     email: str
     
     class Config:

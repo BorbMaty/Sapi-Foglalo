@@ -14,6 +14,10 @@ from app.schemas.reserve import ReserveCreate, ReserveResponse  # Use appropriat
 from app.schemas import UserResponse, LoginRequest  # Import UserResponse and LoginRequest
 from app.models.user import UserDAL  # Import the UserDAL class
 from app.models.passwords import PasswordDAL  # Import the PasswordDAL class
+from fastapi import FastAPI, Form, Request, HTTPException, Depends
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse
+from pydantic import BaseModel
 
 app = FastAPI()
 
@@ -101,3 +105,4 @@ async def login(login_request: LoginRequest, user_dal: UserDAL = Depends(get_use
 
     # If login is successful, return the user details
     return user
+

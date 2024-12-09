@@ -1,7 +1,4 @@
-# app/api/users_router.py
-
-
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, status
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError  # Fix: Import SQLAlchemyError
 from app.schemas import UserWithPasswordResponse
@@ -20,20 +17,40 @@ def get_user_dal(db: Session = Depends(get_db)):
 def get_password_dal(db: Session = Depends(get_db)):
     return PasswordDAL(db)
 
+
+
 @password_router.post("/login", response_model=UserResponse)
-async def login(login_request: LoginRequest, user_dal: UserDAL = Depends(get_user_dal), password_dal: PasswordDAL = Depends(get_password_dal)):
-    # Get the user by email
-    user = user_dal.get_user_by_email(login_request.email)
-    
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
+async def login(
+    login_request: LoginRequest,
+    user_dal: UserDAL = Depends(get_user_dal),
+    password_dal: PasswordDAL = Depends(get_password_dal),
+):
+    try:
+        print(f"Login attempt for email: {login_request.email}")
+        
+        # Fetch the user by email
+        user = user_dal.get_user_by_email(login_request.email)
+        if not user:
+            print(f"User with email {login_request.email} not found.")
+            raise HTTPException(status_code=404, detail="User not found")
 
-    # Verify the password
-    if not password_dal.verify_password(user.id, login_request.password):
-        raise HTTPException(status_code=401, detail="Incorrect password")
+        print(f"User found: ID = {user.id}, Name = {user.name}")
 
-    # If login is successful, return the user details
-    return user
+        # Verify password
+        if not password_dal.verify_password(user.id, login_request.password):
+            print(f"Incorrect password for user ID = {user.id}")
+            raise HTTPException(status_code=401, detail="Incorrect password")
+
+        print(f"User {user.id} logged in successfully.")
+        return user
+
+    except Exception as e:
+        print(f"Unexpected error during login: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Internal Server Error: {e}"
+        )
+
 
 @password_router.get("/users-with-passwords", response_model=list[UserWithPasswordResponse])
 async def get_users_with_passwords(db: Session = Depends(get_db)):
