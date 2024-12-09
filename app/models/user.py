@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, select
 from sqlalchemy.orm import relationship
 from app.database.database import Base
 from app.database.database import Session  # Use the correct absolute import
@@ -77,3 +77,8 @@ class UserDAL:
     
     def get_user_by_email(self, email: str) -> User:
         return self.db_session.query(User).filter(User.email == email).first()
+    
+    def get_user_id_by_name(self, name: str) -> int:
+        result = self.db_session.execute(select(User.id).where(User.name == name))
+        user_id = result.scalar_one_or_none()
+        return user_id

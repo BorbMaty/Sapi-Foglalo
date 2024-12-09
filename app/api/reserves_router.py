@@ -79,11 +79,11 @@ async def delete_reserve(reserve_id: int, reserve_dal: ReserveDAL = Depends(get_
 
 
 
-@reserves_router.get("/reservations/{room_id}/{reservation_date}", response_model=list[ReserveResponse])
+@reserves_router.get("/{room_id}/{reservation_date}", response_model=list[ReserveResponse])
 def get_reservations_for_room(
     room_id: int,
     reservation_date: date,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db) # type: ignore
 ):
     """
     Fetch all reservations for a specific room on a given date.
@@ -100,7 +100,6 @@ def get_reservations_for_room(
         Reserve.Date == reservation_date
     ).all()
 
-    if not reservations:
-        raise HTTPException(status_code=404, detail="No reservations found for the specified room and date.")
-
+    # Return an empty list instead of raising an exception
     return reservations
+
