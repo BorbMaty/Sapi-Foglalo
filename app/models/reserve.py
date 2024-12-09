@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 from app.database.database import Base
 from app.database.database import Session  # Use the correct absolute import
 from datetime import date,time
-
+from app.models.user import User
 
 class Reserve(Base):
     __tablename__ = 'Reserves'
@@ -137,3 +137,27 @@ class ReserveDAL:
             Reserve.start_hour < end_hour,  # Check overlapping times
             Reserve.end_hour > start_hour
         ).first()
+    
+    def get_reserves_by_username(self, username: str) -> list[Reserve]:
+        # This performs the equivalent of:
+        # SELECT r.ReserveId, r.UserId, r.RoomId, r.Date, r.StartHour, r.EndHour
+        # FROM Reserves AS r
+        # JOIN Users AS u ON r.UserId = u.id
+        # WHERE u.name = :username
+        reserves = (
+            self.session.query(Reserve)
+            .join(Reserve.user)  # join to the User table via the relationship
+            .filter(User.name == username)
+            .all()
+        )
+        
+        # Optional: print out the results for debugging
+        if reserves:
+            print(f"Reserves for user '{username}':")
+            for reserve in reserves:
+                print(f"- Reserve ID: {reserve.ReserveId}, Room ID: {reserve.RoomId}, Date: {reserve.Date}, "
+                      f"Start: {reserve.StartHour}, End: {reserve.EndHour}")
+        else:
+            print(f"No reserves found for user '{username}'.")
+
+        return reserves
