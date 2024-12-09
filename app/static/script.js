@@ -120,10 +120,10 @@ async function replaceContent(level) {
         return;
     }
 
-   try {
-        const response = await fetch(`${API_BASE_URL}/rooms`);
-        if (!response.ok) throw new Error("Failed to fetch rooms.");
-        const dbRooms = await response.json();
+//    try {
+//         const response = await fetch(`${API_BASE_URL}/rooms`);
+//         if (!response.ok) throw new Error("Failed to fetch rooms.");
+//         const dbRooms = await response.json();
 
         // Create and append each room div
         rooms.forEach(room => {
@@ -138,9 +138,9 @@ async function replaceContent(level) {
 
             container.appendChild(roomDiv);
         });
-    } catch (err) {
-        console.error("Error fetching rooms:", err);
-    }
+    // } catch (err) {
+    //     console.error("Error fetching rooms:", err);
+    // }
 }
 
 // Function to open the booking modal
@@ -186,11 +186,11 @@ function scaleContent() {
     container.style.transformOrigin = 'top';
 }
 
-window.onresize = scaleContent;
+//window.onresize = scaleContent;
 
 // Initialize the page
 window.onload = function () {
-    scaleContent();
+    //scaleContent();
     replaceContent(currentLevel); // Load the first level
 };
 
@@ -348,6 +348,47 @@ async function populateBookings(roomId, reservationDate) {
         console.error("Error fetching reservations:", error);
         foglaltContainer.innerHTML = `<p style="text-align: center; margin: 10px;">Failed to load reservations. Please try again later.</p>`;
         szabadContainer.innerHTML = `<p style="text-align: center; margin: 10px;">Unable to determine free slots.</p>`;
+    }
+}
+
+function listReservations() {
+    const reservationsDiv = document.getElementsByClassName('your-reservations')[0];
+    //reservationsDiv.classList.toggle('hidden');
+    reservationsDiv.style.display = "flex";
+}
+
+function closeReservations() {
+    document.getElementsByClassName('your-reservations')[0].style.display = 'none';
+}
+function loadReservations() {
+    const reservationsDiv = document.getElementsByClassName('your-reservations')[0];
+    const reservationContent = document.getElementsByClassName('reservation-content')[0];
+
+    // Toggle the visibility of the reservations container
+    if (reservationsDiv.style.display === "none" || reservationsDiv.style.display === "") {
+        reservationsDiv.style.display = "flex";
+        reservationsDiv.style.flexDirection = "column";
+
+        // Hard-coded reservations
+        const reservations = [
+            { id: 1, date: "2024-12-10", room: "130" },
+            { id: 2, date: "2024-12-11", room: "128" },
+            { id: 3, date: "2024-12-12", room: "129" },
+            { id: 4, date: "2024-12-13", room: "131" },
+            { id: 5, date: "2024-12-14", room: "132" },
+        ];
+
+        // Populate reservations
+        reservationContent.innerHTML = reservations.map(reservation => `
+            <div class="reservation-item">
+                <p><strong>Reservation ID:</strong> ${reservation.id}</p>
+                <p><strong>Date:</strong> ${reservation.date}</p>
+                <p><strong>Room:</strong> ${reservation.room}</p>
+                <button onclick="deleteReservation(${index})">Delete</button>
+            </div>
+        `).join('');
+    } else {
+        reservationsDiv.style.display = "none";
     }
 }
 

@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teremvalasztas</title>
+    <title>Sapi Foglalo</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="shrink">
-    <h1>Teremvalasztas</h1>
+    <div class="header">
+    <h1>Sapi Foglalo</h1>
+    <button class="list-button", onclick="listReservations()">Your Reservations</button></div>
     <div class="outer"> 
         <div class="blueprint"></div>
         <button class="leveling-button leveling-up", onclick="increaseLevel()">+</button>
@@ -47,8 +49,45 @@
                 <ul class="foglalt" id="occupiedList"></ul>
                 <ul class="szabad" id="freeList"></ul>
             </div>
+        </div> 
+    </div>
+    <div class="your-reservations">
+        <div class="reservation-content">
+            <label for="name">Nev:</label>
+            <input type="text" id="name-reservations" name="name-reservations" required>
+            <button class="name-submit-button", onclick="submitName()">List</button>
+            <div class="reservation-item">
+                <p><strong>Reservation ID:</strong> ${reservation.id}</p>
+                <p><strong>Date:</strong> ${reservation.date}</p>
+                <p><strong>Room:</strong> ${reservation.room}</p>
+                <button class="delete-button", onclick="deleteReservation(${index})">Delete</button>
+            </div>
+            <div class="reservation-item">
+                <p><strong>Reservation ID:</strong> ${reservation.id}</p>
+                <p><strong>Date:</strong> ${reservation.date}</p>
+                <p><strong>Room:</strong> ${reservation.room}</p>
+                <button class="delete-button", onclick="deleteReservation(${index})">Delete</button>
+            </div>
+            <div class="reservation-item">
+                <p><strong>Reservation ID:</strong> ${reservation.id}</p>
+                <p><strong>Date:</strong> ${reservation.date}</p>
+                <p><strong>Room:</strong> ${reservation.room}</p>
+                <button class="delete-button", onclick="deleteReservation(${index})">Delete</button>
+            </div>
+            <div class="reservation-item">
+                <p><strong>Reservation ID:</strong> ${reservation.id}</p>
+                <p><strong>Date:</strong> ${reservation.date}</p>
+                <p><strong>Room:</strong> ${reservation.room}</p>
+                <button class="delete-button", onclick="deleteReservation(${index})">Delete</button>
+            </div>
+            <div class="reservation-item">
+                <p><strong>Reservation ID:</strong> ${reservation.id}</p>
+                <p><strong>Date:</strong> ${reservation.date}</p>
+                <p><strong>Room:</strong> ${reservation.room}</p>
+                <button class="delete-button", onclick="deleteReservation(${index})">Delete</button>
+            </div>
+            <button type="button" class="close-btn" onclick="loadReservations()">Cancel</button>
         </div>
-        
     </div>
 
     
