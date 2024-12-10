@@ -19,6 +19,9 @@ h1 {
     justify-content: space-between;
     border-bottom: 2px solid #ccc; /* Optional header styling */
 }
+
+
+
 .list-button {
     padding: 10px 20px;
     font-size: 16px;
@@ -33,6 +36,22 @@ h1 {
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     border: 3px solid black;
 }
+
+.logout-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #d30909;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 20px;
+    transition: transform 0.2s;
+    font-size: 20px;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    border: 3px solid black;
+}
+
 .list-button:hover {
     transform: scale(1.05);
 }

@@ -1,5 +1,20 @@
 const API_BASE_URL = "http://127.0.0.1:8000";
 
+document.addEventListener("DOMContentLoaded", () => {
+    const isLoggedIn = localStorage.getItem("email");
+
+    // Debugging: Log the value of isLoggedIn
+    console.log("isLoggedIn value:", isLoggedIn);
+
+    // if (!isLoggedIn || isLoggedIn !== "true") {
+    if(isLoggedIn == null || isLoggedIn == ''){
+        // Redirect to login page if not logged in
+        alert("Please log in to access this page.");
+        window.location.href = "/static/login.html";
+    }
+});
+
+
 const levels = new Map([
     [1, [
         { id: 133, name: "133", class: "room r133", isClickable: true },
@@ -234,18 +249,24 @@ function onInputChange(event) {
         populateBookings(roomId, reservationDate); // Fetch and display reservations
     }
 }
-
 async function submitBooking() {
     const roomId = document.getElementById('bookingForm').dataset.roomId;
-    const name = document.getElementById('name').value;
     const date = document.getElementById('date').value;
     const startHour = document.getElementById('start_hour').value;
     const endHour = document.getElementById('end_hour').value;
 
+    // Retrieve the email from localStorage
+    const email = localStorage.getItem("email");
+
+    if (!email) {
+        alert("User not logged in. Please log in to book a room.");
+        return; // Stop if no email is found
+    }
+
     let userId;
     try {
-        // Fetch the user ID by name
-        const userIdResponse = await fetch(`${API_BASE_URL}/users/user-id/${encodeURIComponent(name)}`);
+        // Fetch the user ID using the email
+        const userIdResponse = await fetch(`${API_BASE_URL}/users/user-id-by-email/${encodeURIComponent(email)}`);
         if (!userIdResponse.ok) {
             const error = await userIdResponse.json();
             alert(`Error retrieving user ID: ${error.detail}`);
@@ -287,6 +308,7 @@ async function submitBooking() {
         closeModal();
     }
 }
+
 
 
 async function populateBookings(roomId, reservationDate) {
@@ -364,6 +386,13 @@ function listReservations() {
     //reservationsDiv.classList.toggle('hidden');
     reservationsDiv.style.display = "flex";
 }
+
+function logOut() {
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("email");
+    window.location.href = "http://127.0.0.1:8000/static/login.html";
+}
+
 
 function closeReservations() {
     document.getElementsByClassName('your-reservations')[0].style.display = 'none';

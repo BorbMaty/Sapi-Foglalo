@@ -10,7 +10,9 @@
     <div class="shrink">
     <div class="header">
     <h1>Sapi Foglalo</h1>
-    <button class="list-button", onclick="listReservations()">Your Reservations</button></div>
+    <button class="list-button" onclick="listReservations()">Your Reservations</button>
+    <button class="logout-button" onclick="logOut()">Kijelentkezes</button>
+    </div>
     <div class="outer"> 
         <div class="blueprint"></div>
         <button class="leveling-button leveling-up", onclick="increaseLevel()">+</button>
@@ -25,8 +27,8 @@
         <div class="modal-content">
             <h2>Foglalas <span id="roomName">Room</span></h2>
             <form id="bookingForm">
-                <label for="name">Nev:</label><br>
-                <input type="text" id="name" name="name" required><br><br>
+                <!-- <label for="name">Nev:</label><br>
+                <input type="text" id="name" name="name" required><br><br> -->
                 
                 <label for="date">Foglalas datum:</label><br>
                 <input type="date" id="date" name="date" required><br><br>

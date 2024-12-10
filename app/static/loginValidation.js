@@ -17,6 +17,9 @@ document.getElementById("loginForm").addEventListener("submit", async function (
         if (response.ok) {
             const data = await response.json();
             alert(`Welcome, ${data.name}!`); // Display user name from response
+
+            localStorage.setItem("email", data.email);
+            
             window.location.href = '/static/index.html';
         } else {
             const errorData = await response.json();
