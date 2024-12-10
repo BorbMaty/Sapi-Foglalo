@@ -16,7 +16,7 @@ document.getElementById("loginForm").addEventListener("submit", async function (
 
         if (response.ok) {
             const data = await response.json();
-            alert(`Welcome, ${data.name}!`); // Display user name from response
+            // alert(`Welcome, ${data.name}!`); // Display user name from response
 
             localStorage.setItem("email", data.email);
             

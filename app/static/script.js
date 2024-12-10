@@ -201,12 +201,12 @@ function decreaseLevel() {
 
 // Page scaling
 function scaleContent() {
-    const container = document.querySelector('.shrink');
-    const widthScale = window.innerWidth / 1500;
-    const heightScale = window.innerHeight / 700;
-    const scale = Math.min(widthScale, heightScale);
-    container.style.transform = `scale(${scale})`;
-    container.style.transformOrigin = 'top';
+    // const container = document.querySelector('.shrink');
+    // const widthScale = window.innerWidth / 1500;
+    // const heightScale = window.innerHeight / 700;
+    // const scale = Math.min(widthScale, heightScale);
+    // container.style.transform = `scale(${scale})`;
+    // container.style.transformOrigin = 'top';
 }
 
 window.onresize = scaleContent;
@@ -380,12 +380,91 @@ async function populateBookings(roomId, reservationDate) {
         szabadContainer.innerHTML = `<p style="text-align: center; margin: 10px;">Unable to determine free slots.</p>`;
     }
 }
-
-function listReservations() {
+async function listReservations() {
     const reservationsDiv = document.getElementsByClassName('your-reservations')[0];
-    //reservationsDiv.classList.toggle('hidden');
-    reservationsDiv.style.display = "flex";
+    const reservationContent = document.getElementsByClassName('reservation-content')[0];
+
+    if (!reservationContent) {
+        console.error("Reservation content div not found.");
+        return;
+    }
+
+    if (reservationsDiv.style.display === "none" || reservationsDiv.style.display === "") {
+        reservationsDiv.style.display = "flex";
+        reservationsDiv.style.flexDirection = "column";
+    }
+
+    const email = localStorage.getItem("email");
+    if (!email) {
+        reservationContent.innerHTML = "<p>Please log in to view your reservations.</p>";
+        return;
+    }
+
+    try {
+        const response = await fetch(`/reserves/reserves/user/email/${encodeURIComponent(email)}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (response.ok) {
+            const reservations = await response.json();
+
+            reservationContent.innerHTML = ""; // Clear previous content
+
+            if (reservations.length === 0) {
+                reservationContent.innerHTML = "<p>Nincs még foglalásod.</p>";
+                return;
+            }
+
+            // Populate reservations using the specified format
+            reservationContent.innerHTML = reservations.map((reservation, index) => `
+                <div class="reservation-item" id="reservation-${reservation.ReserveId}">
+                    <p><strong>Room:</strong> ${reservation.RoomId}</p>
+                    <p><strong>Date:</strong> ${reservation.Date}</p>
+                    <p><strong>Start Hour:</strong> ${reservation.StartHour}</p>
+                    <p><strong>End Hour:</strong> ${reservation.EndHour}</p>
+                    <button class="delete-button" onclick="deleteReservation(${reservation.ReserveId})">Delete</button>
+                </div>
+            `).join('');
+        } else {
+            const errorMessage = await response.text();
+            console.error("API Error:", errorMessage);
+            reservationContent.innerHTML = `<p>Error fetching reservations: ${errorMessage}</p>`;
+        }
+    } catch (error) {
+        console.error("Network or parsing error:", error);
+        reservationContent.innerHTML = `<p>An error occurred while fetching reservations.</p>`;
+    }
 }
+
+async function deleteReservation(reservationId) {
+    try {
+        const response = await fetch(`/reserves/${reservationId}`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (response.ok) {
+            console.log(`Reservation ${reservationId} deleted successfully.`);
+
+            // Show success popup
+            alert("Reservation deleted successfully.");
+
+            // Refresh the reservations list
+            listReservations();
+        } else {
+            const errorMessage = await response.text();
+            console.error("API Error while deleting reservation:", errorMessage);
+            alert("Failed to delete the reservation.");
+        }
+    } catch (error) {
+        console.error("Network or parsing error during deletion:", error);
+        alert("An error occurred while trying to delete the reservation.");
+    }
+}
+
+
+
 
 function logOut() {
     localStorage.removeItem("isLoggedIn");
@@ -397,38 +476,3 @@ function logOut() {
 function closeReservations() {
     document.getElementsByClassName('your-reservations')[0].style.display = 'none';
 }
-function loadReservations() {
-    const reservationsDiv = document.getElementsByClassName('your-reservations')[0];
-    const reservationContent = document.getElementsByClassName('reservation-content')[0];
-
-    // Toggle the visibility of the reservations container
-    if (reservationsDiv.style.display === "none" || reservationsDiv.style.display === "") {
-        reservationsDiv.style.display = "flex";
-        reservationsDiv.style.flexDirection = "column";
-
-        // Hard-coded reservations
-        const reservations = [
-            { id: 1, date: "2024-12-10", room: "130" },
-            { id: 2, date: "2024-12-11", room: "128" },
-            { id: 3, date: "2024-12-12", room: "129" },
-            { id: 4, date: "2024-12-13", room: "131" },
-            { id: 5, date: "2024-12-14", room: "132" },
-        ];
-
-        // Populate reservations
-        reservationContent.innerHTML = reservations.map(reservation => `
-            <div class="reservation-item">
-                <p><strong>Reservation ID:</strong> ${reservation.id}</p>
-                <p><strong>Date:</strong> ${reservation.date}</p>
-                <p><strong>Room:</strong> ${reservation.room}</p>
-                <button onclick="deleteReservation(${index})">Delete</button>
-            </div>
-        `).join('');
-    } else {
-        reservationsDiv.style.display = "none";
-    }
-}
-
-
-
-
