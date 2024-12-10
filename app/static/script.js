@@ -36,9 +36,17 @@ const levels = new Map([
         { id: 243, name: "243", class: "room r243" }
     ]],
     [3, [
-        { id: 301, name: "Room 301", class: "room r301" },
-        { id: 302, name: "Room 302", class: "room r302" },
-        { id: 303, name: "Library", class: "room library" }
+        { id: 1, name: "Aula", class: "room nonclickable aula" },
+        { id: 323, name: "Mat - Info Tanszek", class: "room nonclickable r223" },
+        { id: 317, name: "317", class: "room r317" },
+        { id: 316, name: "316", class: "room r316" },
+        { id: 313, name: "313", class: "room r313" },
+        { id: 312, name: "312", class: "room r312" },
+        { id: 309, name: "309", class: "room r309" },
+        { id: 308, name: "308", class: "room r308" },
+        { id: 307, name: "307", class: "room r307" },
+        { id: 330, name: "Kerteszmernoki Tanszek", class: "room nonclickable r330" },
+        { id: 337, name: "337", class: "room nonclickable r337" }
     ]],
     [4, [
         { id: 414, name: "414", class: "room r414" },
