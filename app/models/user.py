@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, select
 from sqlalchemy.orm import relationship
 from app.database.database import Base
 from app.database.database import Session  # Use the correct absolute import
@@ -87,5 +87,3 @@ class UserDAL:
         except Exception as e:
             print(f"Error while fetching user by email {email}: {e}")
             raise
-
-

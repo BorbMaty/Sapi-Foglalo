@@ -1,3 +1,5 @@
-# RoomReserver - better name
-Room Reserver is a web application, with one purpose,
-to help you reserve rooms easier on the university.
+# Sapi Foglaló
+
+## Áttekintés
+
+Ezen webalkalmazás lehetővé teszi a könnyed teremfoglalást. Biztosítja hogy ne legyenek egymást keresztező foglalások, és interaktívan mutatja a már foglalt és még szabad időablakokat.
