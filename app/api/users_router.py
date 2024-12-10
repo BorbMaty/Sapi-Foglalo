@@ -58,7 +58,7 @@ async def delete_user(user_id: int, user_dal: UserDAL = Depends(get_user_dal)):
 
 @users_router.get("/user-id/{name}")
 def get_user_id(name: str,  user_dal: UserDAL = Depends(get_user_dal)):
-    user_id = user_dal.get_user_id_by_name(name)
+    user_id = user_dal.get_id_by_name(name)
     if user_id is None:
         raise HTTPException(status_code=404, detail="User not found")
     return {"user_id": user_id}
