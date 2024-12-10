@@ -3,3 +3,4 @@ firebase
 fastapi
 mysql-connector-python
 pydantic
+pyodbc
