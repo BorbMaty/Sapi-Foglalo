@@ -23,7 +23,7 @@ const levels = new Map([
         { id: 130, name: "130", class: "room r130" },
         { id: 129, name: "129", class: "room r129" },
         { id: 128, name: "128", class: "room r128" },
-        { id: 127, name: "Gepeszmernoki Tanszek", class: "room nonclickable r127" },
+        { id: 127, name: "Gépészmérnöki Tanszék", class: "room nonclickable r127" },
         { id: 1, name: "Aula", class: "room nonclickable aula" },
         { id: 114, name: "114", class: "room r114" },
         { id: 109, name: "Porta", class: "room nonclickable porta" },
@@ -40,7 +40,7 @@ const levels = new Map([
         { id: 209, name: "209", class: "room r209" },
         { id: 208, name: "208", class: "room r208" },
         { id: 207, name: "207", class: "room r207" },
-        { id: 223, name: "Villamosmernoki Tanszek", class: "room nonclickable r223" },
+        { id: 223, name: "Villamosmérnöki Tanszáék", class: "room nonclickable r223" },
         { id: 1, name: "Aula", class: "room nonclickable aula" },
         { id: 230, name: "230", class: "room r230" },
         { id: 231, name: "231", class: "room r231" },
@@ -52,7 +52,7 @@ const levels = new Map([
     ]],
     [3, [
         { id: 1, name: "Aula", class: "room nonclickable aula" },
-        { id: 323, name: "Mat - Info Tanszek", class: "room nonclickable r223" },
+        { id: 323, name: "Mat - Info Tanszék", class: "room nonclickable r223" },
         { id: 317, name: "317", class: "room r317" },
         { id: 316, name: "316", class: "room r316" },
         { id: 313, name: "313", class: "room r313" },
@@ -60,7 +60,7 @@ const levels = new Map([
         { id: 309, name: "309", class: "room r309" },
         { id: 308, name: "308", class: "room r308" },
         { id: 307, name: "307", class: "room r307" },
-        { id: 330, name: "Kerteszmernoki Tanszek", class: "room nonclickable r330" },
+        { id: 330, name: "Kertészmérnöki Tanszék", class: "room nonclickable r330" },
         { id: 337, name: "337", class: "room nonclickable r337" }
     ]],
     [4, [
@@ -83,45 +83,38 @@ function query() {
 function calculateFreeSlots(reservations) {
     const openingTime = 8; // Opening time in hours
     const closingTime = 22; // Closing time in hours
-
     const freeSlots = [];
 
-    // Handle no reservations scenario
-    if (reservations.length === 0) {
-        for (let time = openingTime; time < closingTime; time += 2) {
-            const end = Math.min(time + 2, closingTime); // Ensure it doesn’t exceed closing
-            freeSlots.push({ start: time, end: end });
-        }
-        return freeSlots; // Return free slots for the entire day
-    }
+    // Parse reservation times into a usable format and sort
+    const parsedReservations = reservations.map(reservation => ({
+        start: parseInt(reservation.StartHour.split(":")[0]),
+        end: parseInt(reservation.EndHour.split(":")[0])
+    })).sort((a, b) => a.start - b.start);
 
     let lastEndTime = openingTime;
 
-    // Sort reservations by StartHour
-    reservations.sort((a, b) => a.StartHour.localeCompare(b.StartHour));
-
-    reservations.forEach(reservation => {
-        const reservationStart = parseInt(reservation.StartHour.split(":")[0]);
-        if (reservationStart > lastEndTime) {
-            // Divide the gap into 2-hour blocks
-            for (let time = lastEndTime; time < reservationStart; time += 2) {
-                const end = Math.min(time + 2, reservationStart); // Ensure it doesn’t overlap
-                freeSlots.push({ start: time, end: end });
+    // Traverse sorted reservations to find gaps
+    for (const { start, end } of parsedReservations) {
+        if (start > lastEndTime) {
+            // Fill gaps in 2-hour blocks
+            for (let time = lastEndTime; time < start; time += 2) {
+                const slotEnd = Math.min(time + 2, start);
+                freeSlots.push({ start: time, end: slotEnd });
             }
         }
-        lastEndTime = Math.max(lastEndTime, parseInt(reservation.EndHour.split(":")[0]));
-    });
+        // Update the end time to the later of lastEndTime or current reservation end
+        lastEndTime = Math.max(lastEndTime, end);
+    }
 
-    // Handle the time from the last reservation to closing time
-    if (lastEndTime < closingTime) {
-        for (let time = lastEndTime; time < closingTime; time += 2) {
-            const end = Math.min(time + 2, closingTime); // Ensure it doesn’t exceed closing
-            freeSlots.push({ start: time, end: end });
-        }
+    // Add remaining free time until closing time
+    for (let time = lastEndTime; time < closingTime; time += 2) {
+        const slotEnd = Math.min(time + 2, closingTime);
+        freeSlots.push({ start: time, end: slotEnd });
     }
 
     return freeSlots;
 }
+
 
 
 
