@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sapi Foglaló</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="shrink">
+    <div class="header">
+    <h1>Sapi Foglalo</h1>
+    <button class="list-button" onclick="listReservations()">Foglalásaid</button>
+    <button class="logout-button" onclick="logOut()">Kijelentkezés</button>
+    </div>
+    <div class="outer"> 
+        <div class="blueprint"></div>
+        <button class="leveling-button leveling-up", onclick="increaseLevel()">+</button>
+        <button class="leveling-button leveling-down", onclick="decreaseLevel()">-</button>
+        <div class="placc"></div>
+        <div class="placc2"></div>
+        <div class="kalap"></div>
+    </div></div>
+    
+    <!-- Modal for booking form -->
+    <div class="modal" id="bookingModal">
+        <div class="modal-content">
+            <h2>Foglalás <span id="roomName">Room</span></h2>
+            <form id="bookingForm">
+                <!-- <label for="name">Nev:</label><br>
+                <input type="text" id="name" name="name" required><br><br> -->
+                
+                <label for="date">Foglalas datum:</label><br>
+                <input type="date" id="date" name="date" required><br><br>
+
+                <label for="date">Kezdeti ora:</label><br>
+                <input type="time" id="start_hour" name="start_hour" required><br><br>
+
+                <label for="date">Vegso ora:</label><br>
+                <input type="time" id="end_hour" name="end_hour" required><br><br>
+                
+                
+                <button type="button" class="submit-btn" onclick="submitBooking()">Confirm Booking</button>
+                <button type="button" class="close-btn" onclick="closeModal()">Cancel</button>
+                
+            </form>
+        </div>
+        <div class="query" id="query">
+            <div class="query-content">
+                <p id="outputMessage">Foglalasok</p>
+                <ul class="foglalt" id="occupiedList"></ul>
+                <ul class="szabad" id="freeList"></ul>
+            </div>
+        </div> 
+    </div>
+    <div class="your-reservations">
+        <div class="content-with-button">
+        <div class="reservation-content">
+            
+        </div>
+        <button type="button" class="close-btn" onclick="closeReservations()">Vissza</button> 
+        </div>
+    </div>
+
+    
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -139,11 +139,6 @@ class ReserveDAL:
         ).first()
     
     def get_reserves_by_username(self, username: str) -> list[Reserve]:
-        # This performs the equivalent of:
-        # SELECT r.ReserveId, r.UserId, r.RoomId, r.Date, r.StartHour, r.EndHour
-        # FROM Reserves AS r
-        # JOIN Users AS u ON r.UserId = u.id
-        # WHERE u.name = :username
         reserves = (
             self.session.query(Reserve)
             .join(Reserve.user)  # join to the User table via the relationship
@@ -159,5 +154,24 @@ class ReserveDAL:
                       f"Start: {reserve.StartHour}, End: {reserve.EndHour}")
         else:
             print(f"No reserves found for user '{username}'.")
+
+        return reserves
+        
+    def get_reserves_by_email(self, email: str) -> list[Reserve]:
+        reserves = (
+            self.session.query(Reserve)
+            .join(Reserve.user)  # join to the User table via the relationship
+            .filter(User.email == email)  # Filter by email instead of username
+            .all()
+        )
+        
+        # Optional: print out the results for debugging
+        if reserves:
+            print(f"Reserves for user with email '{email}':")
+            for reserve in reserves:
+                print(f"- Reserve ID: {reserve.ReserveId}, Room ID: {reserve.RoomId}, Date: {reserve.Date}, "
+                    f"Start: {reserve.StartHour}, End: {reserve.EndHour}")
+        else:
+            print(f"No reserves found for user with email '{email}'.")
 
         return reserves
