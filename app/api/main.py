@@ -16,17 +16,31 @@ from app.models.user import UserDAL  # Import the UserDAL class
 from app.models.passwords import PasswordDAL  # Import the PasswordDAL class
 from fastapi import FastAPI, Form, Request, HTTPException, Depends
 from passlib.context import CryptContext
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
+# localhost middleware
+
 # Add CORS Middleware
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=["http://localhost:3000"],  # Frontend's development URL
+#     allow_credentials=True,
+#     allow_methods=["*"],
+#     allow_headers=["*"],
+# )
+
+
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Frontend's development URL
+    allow_origins=["*"],  # Replace "*" with specific frontend origins in production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 # Include the routers with their respective prefixes and tags
 app.include_router(users_router, prefix="/users", tags=["Users"])
