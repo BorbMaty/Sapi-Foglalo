@@ -1,31 +1,50 @@
-document.getElementById("loginForm").addEventListener("submit", async function (event) {
-    event.preventDefault();
+// Function to validate the login credentials by connecting to the server
+function validateLogin(event) {
+    event.preventDefault(); // Prevent form submission until validation is complete
 
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+    // Get the values from the input fields
+    var username = document.getElementById('username').value;
+    var password = document.getElementById('password').value;
 
-    try {
-        // Send email and password to the backend
-        const response = await fetch("http://127.0.0.1:8000/password/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email, password }),
-        });
+    // Get the element where we want to display the message
+    var messageElement = document.getElementById('loginMessage');
 
-        if (response.ok) {
-            const data = await response.json();
-            // alert(`Welcome, ${data.name}!`); // Display user name from response
+    // Create an object for the login credentials
+    var credentials = {
+        username: username,
+        password: password
+    };
 
-            localStorage.setItem("email", data.email);
-            
-            window.location.href = '/static/index.html';
+    // Make an API call to the server to check the credentials
+    fetch('/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(credentials)
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Handle the response from the server
+        if (data.success) {
+            // If the credentials are correct, show a success message
+            messageElement.style.color = 'green';
+            messageElement.textContent = 'Login successful!';
+            // Optionally, you can submit the form here if backend validation is successful
+            // document.getElementById('loginForm').submit();
         } else {
-            const errorData = await response.json();
-            document.getElementById("error-message").innerText = errorData.detail || "Invalid credentials.";
+            // If the credentials are incorrect, show a failure message
+            messageElement.style.color = 'red';
+            messageElement.textContent = 'Login failed. Incorrect username or password.';
         }
-    } catch (error) {
-        document.getElementById("error-message").innerText = "An error occurred. Please try again.";
-    }
-});
+    })
+    .catch(error => {
+        // Handle errors in the fetch request
+        messageElement.style.color = 'red';
+        messageElement.textContent = 'An error occurred. Please try again later.';
+        console.error('Error:', error);
+    });
+}
+
+// Add event listener to the form to validate when the login button is pressed
+document.getElementById('loginForm').addEventListener('submit', validateLogin);

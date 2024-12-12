@@ -11,7 +11,6 @@ from app.schemas.password import LoginRequest
 
 password_router = APIRouter()
 
-
 def get_user_dal(db: Session = Depends(get_db)):
     return UserDAL(db)
 
