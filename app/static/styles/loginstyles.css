@@ -1,0 +1,92 @@
+body {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    color: black;
+    background-image: url('../../images/sapibackground.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+h1 {
+    background-color: white;
+    font-size:45px;
+    border: solid black 3px;
+    padding:15px;
+    border-radius: 20px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+}
+.content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 30px;
+}
+.login-container {
+    background: rgb(216, 216, 216);
+    border-radius: 10px;
+    border: solid black 5px;
+    padding: 20px 20px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+}
+
+.login-form h2 {
+    margin-bottom: 40px;   
+    color: black;
+    font-size:35px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.input-group label {
+    font-size: 20px;
+    display: block;
+    margin-bottom: 5px;
+    margin-left: 15px;
+    text-align: left;
+    font-weight: bold;
+}
+
+.input-group input {
+    width: 90%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 18px;
+    margin-bottom: 20px;
+    border: solid black 3px;
+}
+
+.input-group input:focus {
+    border-color: black;
+    outline: none;
+}
+
+.login-button {
+    background: #388442;
+    color: #fff;
+    padding: 10px 100px;
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+    width: 95%;
+    margin-top:20px;
+    margin-bottom:10px;
+    border: solid black 3px;
+}
+
+.login-button:hover {
+    background: #186c25;
+}

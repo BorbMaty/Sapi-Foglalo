@@ -186,12 +186,12 @@ function decreaseLevel() {
 
 // Page scaling
 function scaleContent() {
-    const container = document.querySelector('.shrink');
-    const widthScale = window.innerWidth / 1500;
-    const heightScale = window.innerHeight / 700;
-    const scale = Math.min(widthScale, heightScale);
-    container.style.transform = `scale(${scale})`;
-    container.style.transformOrigin = 'top';
+    // const container = document.querySelector('.shrink');
+    // const widthScale = window.innerWidth / 1500;
+    // const heightScale = window.innerHeight / 700;
+    // const scale = Math.min(widthScale, heightScale);
+    // container.style.transform = `scale(${scale})`;
+    // container.style.transformOrigin = 'top';
 }
 
 window.onresize = scaleContent;
