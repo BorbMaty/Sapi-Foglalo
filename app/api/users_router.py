@@ -1,4 +1,3 @@
-# app/api/users_router.py
 from fastapi import APIRouter, HTTPException, Depends
 from app.schemas import UserCreate, UserResponse
 from app.database import get_db
@@ -62,3 +61,10 @@ def get_user_id(name: str,  user_dal: UserDAL = Depends(get_user_dal)):
     if user_id is None:
         raise HTTPException(status_code=404, detail="User not found")
     return {"user_id": user_id}
+
+@users_router.get("/user-id-by-email/{email}")
+async def get_user_id_by_email(email: str, user_dal: UserDAL = Depends(get_user_dal)):
+    user = user_dal.get_user_by_email(email)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return {"user_id": user.id}

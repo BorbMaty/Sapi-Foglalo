@@ -9,33 +9,31 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 from app.database import get_db
-from app.models.reserve import Reserve  # Import your Reserve model
+from app.models.reserve import Reserve
 from app.schemas.reserve import ReserveCreate, ReserveResponse  # Use appropriate Pydantic schemas
-from app.schemas import UserResponse, LoginRequest  # Import UserResponse and LoginRequest
-from app.models.user import UserDAL  # Import the UserDAL class
-from app.models.passwords import PasswordDAL  # Import the PasswordDAL class
+from app.schemas import UserResponse, LoginRequest
+from app.models.user import UserDAL
+from app.models.passwords import PasswordDAL
 from fastapi import FastAPI, Form, Request, HTTPException, Depends
 from passlib.context import CryptContext
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-# Add CORS Middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Frontend's development URL
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Include the routers with their respective prefixes and tags
 app.include_router(users_router, prefix="/users", tags=["Users"])
 app.include_router(rooms_router, prefix="/rooms", tags=["Rooms"])
 app.include_router(reserves_router, prefix="/reserves", tags=["Reserves"])
 app.include_router(positions_router, prefix="/positions", tags=["Positions"])
 app.include_router(password_router, prefix="/password", tags=["Password"])
 
-# Use the absolute path to the static directory
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 app.mount("/images", StaticFiles(directory="app/images"), name="images")
 

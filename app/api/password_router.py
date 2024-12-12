@@ -8,7 +8,6 @@ from app.models.passwords import Password, PasswordDAL  # Fix: Import Password m
 from app.schemas import UserResponse
 from app.schemas.password import LoginRequest
 
-
 password_router = APIRouter()
 
 def get_user_dal(db: Session = Depends(get_db)):
@@ -16,8 +15,6 @@ def get_user_dal(db: Session = Depends(get_db)):
 
 def get_password_dal(db: Session = Depends(get_db)):
     return PasswordDAL(db)
-
-
 
 @password_router.post("/login", response_model=UserResponse)
 async def login(
@@ -51,7 +48,6 @@ async def login(
             detail=f"Internal Server Error: {e}"
         )
 
-
 @password_router.get("/users-with-passwords", response_model=list[UserWithPasswordResponse])
 async def get_users_with_passwords(db: Session = Depends(get_db)):
     """
@@ -74,8 +70,6 @@ async def get_users_with_passwords(db: Session = Depends(get_db)):
         )
         for user, password in results
     ]
-
-
         return users_with_passwords
     except SQLAlchemyError as e:
         raise HTTPException(status_code=500, detail="Database query failed") from e

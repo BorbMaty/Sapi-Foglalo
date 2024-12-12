@@ -4,17 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sapi Foglaló</title>
-    <link rel="stylesheet" href="styles/styles.css">
-    <link rel="stylesheet" href="styles/your-reservations-styles.css">
-    <link rel="stylesheet" href="styles/blueprint-styles.css">
-    <link rel="stylesheet" href="styles/reserve-styles.css">
-    <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="shrink">
     <div class="header">
-    <h1>Sapi Foglaló</h1>
-    <button class="list-button", onclick="listReservations()">Your Reservations</button></div>
+    <h1>Sapi Foglalo</h1>
+    <button class="list-button" onclick="listReservations()">Foglalásaid</button>
+    <button class="logout-button" onclick="logOut()">Kijelentkezés</button>
+    </div>
     <div class="outer"> 
         <div class="blueprint"></div>
         <button class="leveling-button leveling-up", onclick="increaseLevel()">+</button>
@@ -24,10 +22,13 @@
         <div class="kalap"></div>
     </div></div>
     
+    <!-- Modal for booking form -->
     <div class="modal" id="bookingModal">
         <div class="modal-content">
-            <h2>Foglalas <span id="roomName">Room</span></h2>
+            <h2>Foglalás <span id="roomName">Room</span></h2>
             <form id="bookingForm">
+                <!-- <label for="name">Nev:</label><br>
+                <input type="text" id="name" name="name" required><br><br> -->
                 
                 <label for="date">Foglalas datum:</label><br>
                 <input type="date" id="date" name="date" required><br><br>
@@ -46,19 +47,20 @@
         </div>
         <div class="query" id="query">
             <div class="query-content">
-                <p id="outputMessage">Foglalasok</p>
+                <p id="outputMessage">Foglalások</p>
                 <ul class="foglalt" id="occupiedList"></ul>
                 <ul class="szabad" id="freeList"></ul>
             </div>
         </div> 
     </div>
     <div class="your-reservations">
+        <div class="content-with-button">
         <div class="reservation-content">
-            </div>
-            <button type="button" class="close-btn" onclick="loadReservations()">Cancel</button>
             
-
-    
+        </div>
+        <button type="button" class="close-btn" onclick="closeReservations()">Vissza</button> 
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>

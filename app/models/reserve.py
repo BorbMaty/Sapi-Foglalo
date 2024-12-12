@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, Date, Time, ForeignKey, and_
 from sqlalchemy.orm import relationship
 from app.database.database import Base
-from app.database.database import Session  # Use the correct absolute import
+from app.database.database import Session
 from datetime import date,time
 from app.models.user import User
 
@@ -106,7 +106,7 @@ class ReserveDAL:
             return True
         return False
 
-    def get_all_reserves(self) -> list[Reserve]:  # This is the method you're looking for
+    def get_all_reserves(self) -> list[Reserve]:
         return self.session.query(Reserve).all()
     
     def update_reserve(self, reserve_id: int, **kwargs) -> bool:
@@ -139,11 +139,6 @@ class ReserveDAL:
         ).first()
     
     def get_reserves_by_username(self, username: str) -> list[Reserve]:
-        # This performs the equivalent of:
-        # SELECT r.ReserveId, r.UserId, r.RoomId, r.Date, r.StartHour, r.EndHour
-        # FROM Reserves AS r
-        # JOIN Users AS u ON r.UserId = u.id
-        # WHERE u.name = :username
         reserves = (
             self.session.query(Reserve)
             .join(Reserve.user)  # join to the User table via the relationship
@@ -151,7 +146,6 @@ class ReserveDAL:
             .all()
         )
         
-        # Optional: print out the results for debugging
         if reserves:
             print(f"Reserves for user '{username}':")
             for reserve in reserves:
@@ -159,5 +153,23 @@ class ReserveDAL:
                       f"Start: {reserve.StartHour}, End: {reserve.EndHour}")
         else:
             print(f"No reserves found for user '{username}'.")
+
+        return reserves
+        
+    def get_reserves_by_email(self, email: str) -> list[Reserve]:
+        reserves = (
+            self.session.query(Reserve)
+            .join(Reserve.user)  # join to the User table via the relationship
+            .filter(User.email == email)  # Filter by email instead of username
+            .all()
+        )
+        
+        if reserves:
+            print(f"Reserves for user with email '{email}':")
+            for reserve in reserves:
+                print(f"- Reserve ID: {reserve.ReserveId}, Room ID: {reserve.RoomId}, Date: {reserve.Date}, "
+                    f"Start: {reserve.StartHour}, End: {reserve.EndHour}")
+        else:
+            print(f"No reserves found for user with email '{email}'.")
 
         return reserves

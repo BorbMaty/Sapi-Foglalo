@@ -1,5 +1,20 @@
 const API_BASE_URL = "http://127.0.0.1:8000";
 
+document.addEventListener("DOMContentLoaded", () => {
+    const isLoggedIn = localStorage.getItem("email");
+
+    // Debugging: Log the value of isLoggedIn
+    console.log("isLoggedIn value:", isLoggedIn);
+
+    // if (!isLoggedIn || isLoggedIn !== "true") {
+    if(isLoggedIn == null || isLoggedIn == ''){
+        // Redirect to login page if not logged in
+        alert("Please log in to access this page.");
+        window.location.href = "/static/login.html";
+    }
+});
+
+
 const levels = new Map([
     [1, [
         { id: 133, name: "133", class: "room r133", isClickable: true },
@@ -8,7 +23,7 @@ const levels = new Map([
         { id: 130, name: "130", class: "room r130" },
         { id: 129, name: "129", class: "room r129" },
         { id: 128, name: "128", class: "room r128" },
-        { id: 127, name: "Gepeszmernoki Tanszek", class: "room nonclickable r127" },
+        { id: 127, name: "Gépészmérnöki Tanszék", class: "room nonclickable r127" },
         { id: 1, name: "Aula", class: "room nonclickable aula" },
         { id: 114, name: "114", class: "room r114" },
         { id: 109, name: "Porta", class: "room nonclickable porta" },
@@ -25,7 +40,7 @@ const levels = new Map([
         { id: 209, name: "209", class: "room r209" },
         { id: 208, name: "208", class: "room r208" },
         { id: 207, name: "207", class: "room r207" },
-        { id: 223, name: "Villamosmernoki Tanszek", class: "room nonclickable r223" },
+        { id: 223, name: "Villamosmérnöki Tanszáék", class: "room nonclickable r223" },
         { id: 1, name: "Aula", class: "room nonclickable aula" },
         { id: 230, name: "230", class: "room r230" },
         { id: 231, name: "231", class: "room r231" },
@@ -37,7 +52,7 @@ const levels = new Map([
     ]],
     [3, [
         { id: 1, name: "Aula", class: "room nonclickable aula" },
-        { id: 323, name: "Mat - Info Tanszek", class: "room nonclickable r223" },
+        { id: 323, name: "Mat - Info Tanszék", class: "room nonclickable r223" },
         { id: 317, name: "317", class: "room r317" },
         { id: 316, name: "316", class: "room r316" },
         { id: 313, name: "313", class: "room r313" },
@@ -45,7 +60,7 @@ const levels = new Map([
         { id: 309, name: "309", class: "room r309" },
         { id: 308, name: "308", class: "room r308" },
         { id: 307, name: "307", class: "room r307" },
-        { id: 330, name: "Kerteszmernoki Tanszek", class: "room nonclickable r330" },
+        { id: 330, name: "Kertészmérnöki Tanszék", class: "room nonclickable r330" },
         { id: 337, name: "337", class: "room nonclickable r337" }
     ]],
     [4, [
@@ -68,45 +83,38 @@ function query() {
 function calculateFreeSlots(reservations) {
     const openingTime = 8; // Opening time in hours
     const closingTime = 22; // Closing time in hours
-
     const freeSlots = [];
 
-    // Handle no reservations scenario
-    if (reservations.length === 0) {
-        for (let time = openingTime; time < closingTime; time += 2) {
-            const end = Math.min(time + 2, closingTime); // Ensure it doesn’t exceed closing
-            freeSlots.push({ start: time, end: end });
-        }
-        return freeSlots; // Return free slots for the entire day
-    }
+    // Parse reservation times into a usable format and sort
+    const parsedReservations = reservations.map(reservation => ({
+        start: parseInt(reservation.StartHour.split(":")[0]),
+        end: parseInt(reservation.EndHour.split(":")[0])
+    })).sort((a, b) => a.start - b.start);
 
     let lastEndTime = openingTime;
 
-    // Sort reservations by StartHour
-    reservations.sort((a, b) => a.StartHour.localeCompare(b.StartHour));
-
-    reservations.forEach(reservation => {
-        const reservationStart = parseInt(reservation.StartHour.split(":")[0]);
-        if (reservationStart > lastEndTime) {
-            // Divide the gap into 2-hour blocks
-            for (let time = lastEndTime; time < reservationStart; time += 2) {
-                const end = Math.min(time + 2, reservationStart); // Ensure it doesn’t overlap
-                freeSlots.push({ start: time, end: end });
+    // Traverse sorted reservations to find gaps
+    for (const { start, end } of parsedReservations) {
+        if (start > lastEndTime) {
+            // Fill gaps in 2-hour blocks
+            for (let time = lastEndTime; time < start; time += 2) {
+                const slotEnd = Math.min(time + 2, start);
+                freeSlots.push({ start: time, end: slotEnd });
             }
         }
-        lastEndTime = Math.max(lastEndTime, parseInt(reservation.EndHour.split(":")[0]));
-    });
+        // Update the end time to the later of lastEndTime or current reservation end
+        lastEndTime = Math.max(lastEndTime, end);
+    }
 
-    // Handle the time from the last reservation to closing time
-    if (lastEndTime < closingTime) {
-        for (let time = lastEndTime; time < closingTime; time += 2) {
-            const end = Math.min(time + 2, closingTime); // Ensure it doesn’t exceed closing
-            freeSlots.push({ start: time, end: end });
-        }
+    // Add remaining free time until closing time
+    for (let time = lastEndTime; time < closingTime; time += 2) {
+        const slotEnd = Math.min(time + 2, closingTime);
+        freeSlots.push({ start: time, end: slotEnd });
     }
 
     return freeSlots;
 }
+
 
 
 
@@ -234,18 +242,24 @@ function onInputChange(event) {
         populateBookings(roomId, reservationDate); // Fetch and display reservations
     }
 }
-
 async function submitBooking() {
     const roomId = document.getElementById('bookingForm').dataset.roomId;
-    const name = document.getElementById('name').value;
     const date = document.getElementById('date').value;
     const startHour = document.getElementById('start_hour').value;
     const endHour = document.getElementById('end_hour').value;
 
+    // Retrieve the email from localStorage
+    const email = localStorage.getItem("email");
+
+    if (!email) {
+        alert("User not logged in. Please log in to book a room.");
+        return; // Stop if no email is found
+    }
+
     let userId;
     try {
-        // Fetch the user ID by name
-        const userIdResponse = await fetch(`${API_BASE_URL}/users/user-id/${encodeURIComponent(name)}`);
+        // Fetch the user ID using the email
+        const userIdResponse = await fetch(`${API_BASE_URL}/users/user-id-by-email/${encodeURIComponent(email)}`);
         if (!userIdResponse.ok) {
             const error = await userIdResponse.json();
             alert(`Error retrieving user ID: ${error.detail}`);
@@ -287,6 +301,7 @@ async function submitBooking() {
         closeModal();
     }
 }
+
 
 
 async function populateBookings(roomId, reservationDate) {
@@ -358,48 +373,99 @@ async function populateBookings(roomId, reservationDate) {
         szabadContainer.innerHTML = `<p style="text-align: center; margin: 10px;">Unable to determine free slots.</p>`;
     }
 }
-
-function listReservations() {
-    const reservationsDiv = document.getElementsByClassName('your-reservations')[0];
-    //reservationsDiv.classList.toggle('hidden');
-    reservationsDiv.style.display = "flex";
-}
-
-function closeReservations() {
-    document.getElementsByClassName('your-reservations')[0].style.display = 'none';
-}
-function loadReservations() {
+async function listReservations() {
     const reservationsDiv = document.getElementsByClassName('your-reservations')[0];
     const reservationContent = document.getElementsByClassName('reservation-content')[0];
 
-    // Toggle the visibility of the reservations container
+    if (!reservationContent) {
+        console.error("Reservation content div not found.");
+        return;
+    }
+
     if (reservationsDiv.style.display === "none" || reservationsDiv.style.display === "") {
         reservationsDiv.style.display = "flex";
         reservationsDiv.style.flexDirection = "column";
+    }
 
-        // Hard-coded reservations
-        const reservations = [
-            { id: 1, date: "2024-12-10", room: "130" },
-            { id: 2, date: "2024-12-11", room: "128" },
-            { id: 3, date: "2024-12-12", room: "129" },
-            { id: 4, date: "2024-12-13", room: "131" },
-            { id: 5, date: "2024-12-14", room: "132" },
-        ];
+    const email = localStorage.getItem("email");
+    if (!email) {
+        reservationContent.innerHTML = "<p>Please log in to view your reservations.</p>";
+        return;
+    }
 
-        // Populate reservations
-        reservationContent.innerHTML = reservations.map(reservation => `
-            <div class="reservation-item">
-                <p><strong>Reservation ID:</strong> ${reservation.id}</p>
-                <p><strong>Date:</strong> ${reservation.date}</p>
-                <p><strong>Room:</strong> ${reservation.room}</p>
-                <button onclick="deleteReservation(${index})">Delete</button>
-            </div>
-        `).join('');
-    } else {
-        reservationsDiv.style.display = "none";
+    try {
+        const response = await fetch(`/reserves/reserves/user/email/${encodeURIComponent(email)}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (response.ok) {
+            const reservations = await response.json();
+
+            reservationContent.innerHTML = ""; // Clear previous content
+
+            if (reservations.length === 0) {
+                reservationContent.innerHTML = "<p>Nincs még foglalásod.</p>";
+                return;
+            }
+
+            // Populate reservations using the specified format
+            reservationContent.innerHTML = reservations.map((reservation, index) => `
+                <div class="reservation-item" id="reservation-${reservation.ReserveId}">
+                    <p><strong>Room:</strong> ${reservation.RoomId}</p>
+                    <p><strong>Date:</strong> ${reservation.Date}</p>
+                    <p><strong>Start Hour:</strong> ${reservation.StartHour}</p>
+                    <p><strong>End Hour:</strong> ${reservation.EndHour}</p>
+                    <button class="delete-button" onclick="deleteReservation(${reservation.ReserveId})">Delete</button>
+                </div>
+            `).join('');
+        } else {
+            const errorMessage = await response.text();
+            console.error("API Error:", errorMessage);
+            reservationContent.innerHTML = `<p>Error fetching reservations: ${errorMessage}</p>`;
+        }
+    } catch (error) {
+        console.error("Network or parsing error:", error);
+        reservationContent.innerHTML = `<p>An error occurred while fetching reservations.</p>`;
+    }
+}
+
+async function deleteReservation(reservationId) {
+    try {
+        const response = await fetch(`/reserves/${reservationId}`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (response.ok) {
+            console.log(`Reservation ${reservationId} deleted successfully.`);
+
+            // Show success popup
+            alert("Reservation deleted successfully.");
+
+            // Refresh the reservations list
+            listReservations();
+        } else {
+            const errorMessage = await response.text();
+            console.error("API Error while deleting reservation:", errorMessage);
+            alert("Failed to delete the reservation.");
+        }
+    } catch (error) {
+        console.error("Network or parsing error during deletion:", error);
+        alert("An error occurred while trying to delete the reservation.");
     }
 }
 
 
 
 
+function logOut() {
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("email");
+    window.location.href = "http://127.0.0.1:8000/static/login.html";
+}
+
+
+function closeReservations() {
+    document.getElementsByClassName('your-reservations')[0].style.display = 'none';
+}

@@ -1,4 +1,3 @@
-# app/api/reserves_router.py
 from datetime import date
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -73,12 +72,10 @@ async def update_reserve(reserve_id: int, reserve_data: ReserveCreate, reserve_d
 
 @reserves_router.delete("/{reserve_id}", status_code=204)
 async def delete_reserve(reserve_id: int, reserve_dal: ReserveDAL = Depends(get_reserve_dal)):
-    reserve_deleted = reserve_dal.delete_reserve(reserve_id)
+    reserve_deleted = reserve_dal.delete_reserve_by_id(reserve_id)
     if not reserve_deleted:
         raise HTTPException(status_code=404, detail="Reserve not found")
     return {"detail": "Reserve deleted successfully"}
-
-
 
 @reserves_router.get("/{room_id}/{reservation_date}", response_model=list[ReserveResponse])
 def get_reservations_for_room(
@@ -113,4 +110,13 @@ def get_user_reserves(username: str, session: Session = Depends(get_db)): #type:
     reserves = dal.get_reserves_by_username(username)
 
     # Return the list of reserves
+    return reserves
+
+@reserves_router.get("/reserves/user/email/{email}", response_model=list[ReserveResponse])
+def get_user_reserves_by_email(email: str, session: Session = Depends(get_db)):
+    print(f"Fetching reservations for email: {email}")
+    dal = ReserveDAL(session)
+    reserves = dal.get_reserves_by_email(email)
+    if not reserves:
+        print(f"No reservations found for email: {email}")
     return reserves
