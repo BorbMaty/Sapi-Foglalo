@@ -12,12 +12,15 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("Please log in to access this page.");
         window.location.href = "/static/login.html";
     }
+
+    const loggedInAsElement = document.getElementById("logged-in-as");
+        loggedInAsElement.innerHTML += `<b>Bejelentkezve mint:</b> <i>${isLoggedIn}</i>`;
 });
 
 
 const levels = new Map([
     [1, [
-        { id: 133, name: "133", class: "room r133", isClickable: true },
+        { id: 133, name: "133", class: "room r133" },
         { id: 132, name: "132", class: "room r132" },
         { id: 131, name: "131", class: "room r131" },
         { id: 130, name: "130", class: "room r130" },
@@ -27,7 +30,7 @@ const levels = new Map([
         { id: 1, name: "Aula", class: "room nonclickable aula" },
         { id: 114, name: "114", class: "room r114" },
         { id: 109, name: "Porta", class: "room nonclickable porta" },
-        { id: 134, name: "Bufe", class: "room nonclickable bufe" },
+        { id: 134, name: "Büfé", class: "room nonclickable bufe" },
         { id: 111, name: "111", class: "room r111" },
         { id: 112, name: "112", class: "room r112" },
         { id: 113, name: "113", class: "room r113" }
@@ -52,7 +55,7 @@ const levels = new Map([
     ]],
     [3, [
         { id: 1, name: "Aula", class: "room nonclickable aula" },
-        { id: 323, name: "Mat - Info Tanszék", class: "room nonclickable r223" },
+        { id: 323, name: "Mat - Infó Tanszék", class: "room nonclickable r223" },
         { id: 317, name: "317", class: "room r317" },
         { id: 316, name: "316", class: "room r316" },
         { id: 313, name: "313", class: "room r313" },
@@ -61,7 +64,9 @@ const levels = new Map([
         { id: 308, name: "308", class: "room r308" },
         { id: 307, name: "307", class: "room r307" },
         { id: 330, name: "Kertészmérnöki Tanszék", class: "room nonclickable r330" },
+        { id: 338, name: "Könyvtár", class: "room r338" },
         { id: 337, name: "337", class: "room nonclickable r337" }
+        
     ]],
     [4, [
         { id: 414, name: "414", class: "room r414" },
@@ -77,7 +82,7 @@ const levels = new Map([
 
 function query() {
     const queryModal = document.getElementById("query");
-    queryModal.style.display = "flex"; // Ensure the query modal is visible
+    queryModal.style.display = "flex";
 }
 
 function calculateFreeSlots(reservations) {
@@ -111,19 +116,12 @@ function calculateFreeSlots(reservations) {
         const slotEnd = Math.min(time + 2, closingTime);
         freeSlots.push({ start: time, end: slotEnd });
     }
-
     return freeSlots;
 }
-
-
-
-
-
 
 let currentLevel = 1;
 const maxLevel = 4;
 const minLevel = 1;
-
 
 // Function to replace content for the selected level
 async function replaceContent(level) {
@@ -135,28 +133,18 @@ async function replaceContent(level) {
         console.error(`Level ${level} does not exist.`);
         return;
     }
-
-//    try {
-//         const response = await fetch(`${API_BASE_URL}/rooms`);
-//         if (!response.ok) throw new Error("Failed to fetch rooms.");
-//         const dbRooms = await response.json();
-
         // Create and append each room div
         rooms.forEach(room => {
             const roomDiv = document.createElement('div');
             roomDiv.className = room.class;
             roomDiv.textContent = room.name;
 
-           // const isAvailable = dbRooms.some(dbRoom => dbRoom.id === room.id);
             if (!room.class.includes('nonclickable')) {
                 roomDiv.onclick = () => openBookingModal(room.id);
             }
 
             container.appendChild(roomDiv);
         });
-    // } catch (err) {
-    //     console.error("Error fetching rooms:", err);
-    // }
 }
 
 // Function to open the booking modal
@@ -173,9 +161,6 @@ function closeModal() {
     document.getElementById('bookingModal').style.display = 'none';
     document.getElementById('query').style.display = 'none';
 }
-
-
-
 
 // Level navigation functions
 function increaseLevel() {
@@ -194,19 +179,19 @@ function decreaseLevel() {
 
 // Page scaling
 function scaleContent() {
-    // const container = document.querySelector('.shrink');
-    // const widthScale = window.innerWidth / 1500;
-    // const heightScale = window.innerHeight / 700;
-    // const scale = Math.min(widthScale, heightScale);
-    // container.style.transform = `scale(${scale})`;
-    // container.style.transformOrigin = 'top';
+    const container = document.querySelector('.shrink');
+    const widthScale = window.innerWidth / 1500;
+    const heightScale = window.innerHeight / 700;
+    const scale = Math.min(widthScale, heightScale);
+    container.style.transform = `scale(${scale})`;
+    container.style.transformOrigin = 'top';
 }
 
-window.onresize = scaleContent;
+//window.onresize = scaleContent; //optional scaling
 
 // Initialize the page
 window.onload = function () {
-    scaleContent();
+    //scaleContent(); //optional scaling
     replaceContent(currentLevel); // Load the first level
 };
 
@@ -222,8 +207,8 @@ document.addEventListener('keydown', (event) => {
 const inputField = document.getElementById('date');
 
 function onInputChange(event) {
-    const reservationDate = event.target.value; // Selected date
-    const roomId = document.getElementById('bookingForm').dataset.roomId; // Selected room ID
+    const reservationDate = event.target.value;
+    const roomId = document.getElementById('bookingForm').dataset.roomId;
 
     if (reservationDate && roomId) {
         query(); // Display the query modal
@@ -234,8 +219,8 @@ function onInputChange(event) {
 document.getElementById('date').addEventListener('input', onInputChange);
 
 function onInputChange(event) {
-    const reservationDate = event.target.value; // Selected date
-    const roomId = document.getElementById('bookingForm').dataset.roomId; // Selected room ID
+    const reservationDate = event.target.value;
+    const roomId = document.getElementById('bookingForm').dataset.roomId;
 
     if (reservationDate && roomId) {
         query(); // Show the query modal
@@ -302,8 +287,6 @@ async function submitBooking() {
     }
 }
 
-
-
 async function populateBookings(roomId, reservationDate) {
     const foglaltContainer = document.querySelector(".foglalt");
     const szabadContainer = document.querySelector(".szabad");
@@ -333,15 +316,15 @@ async function populateBookings(roomId, reservationDate) {
             bookingDiv.classList.add("booking");
 
             const userName = document.createElement("p");
-            userName.innerHTML = `<strong>Name:</strong> ${reservation.user.name || "N/A"}`;
+            userName.innerHTML = `<strong>Név:</strong> ${reservation.user.name || "N/A"}`;
             bookingDiv.appendChild(userName);
 
             const startTime = document.createElement("p");
-            startTime.innerHTML = `<strong>Start:</strong> ${reservation.StartHour.slice(0, 5) || "N/A"}`;
+            startTime.innerHTML = `<strong>Kezdet:</strong> ${reservation.StartHour.slice(0, 5) || "N/A"}`;
             bookingDiv.appendChild(startTime);
 
             const endTime = document.createElement("p");
-            endTime.innerHTML = `<strong>End:</strong> ${reservation.EndHour.slice(0, 5) || "N/A"}`;
+            endTime.innerHTML = `<strong>Vég:</strong> ${reservation.EndHour.slice(0, 5) || "N/A"}`;
             bookingDiv.appendChild(endTime);
 
             foglaltContainer.appendChild(bookingDiv);
@@ -357,11 +340,11 @@ async function populateBookings(roomId, reservationDate) {
                 freeSlotDiv.classList.add("booking");
 
                 const startTime = document.createElement("p");
-                startTime.innerHTML = `<strong>Start:</strong> ${slot.start}:00`;
+                startTime.innerHTML = `<strong>Kezdet:</strong> ${slot.start}:00`;
                 freeSlotDiv.appendChild(startTime);
 
                 const endTime = document.createElement("p");
-                endTime.innerHTML = `<strong>End:</strong> ${slot.end}:00`;
+                endTime.innerHTML = `<strong>Vég:</strong> ${slot.end}:00`;
                 freeSlotDiv.appendChild(endTime);
 
                 szabadContainer.appendChild(freeSlotDiv);
@@ -373,6 +356,7 @@ async function populateBookings(roomId, reservationDate) {
         szabadContainer.innerHTML = `<p style="text-align: center; margin: 10px;">Unable to determine free slots.</p>`;
     }
 }
+
 async function listReservations() {
     const reservationsDiv = document.getElementsByClassName('your-reservations')[0];
     const reservationContent = document.getElementsByClassName('reservation-content')[0];
@@ -412,11 +396,11 @@ async function listReservations() {
             // Populate reservations using the specified format
             reservationContent.innerHTML = reservations.map((reservation, index) => `
                 <div class="reservation-item" id="reservation-${reservation.ReserveId}">
-                    <p><strong>Room:</strong> ${reservation.RoomId}</p>
-                    <p><strong>Date:</strong> ${reservation.Date}</p>
-                    <p><strong>Start Hour:</strong> ${reservation.StartHour}</p>
-                    <p><strong>End Hour:</strong> ${reservation.EndHour}</p>
-                    <button class="delete-button" onclick="deleteReservation(${reservation.ReserveId})">Delete</button>
+                    <p><strong>Terem:</strong> ${reservation.RoomId}</p>
+                    <p><strong>Dátum:</strong> ${reservation.Date}</p>
+                    <p><strong>Időpont kezdete:</strong> ${reservation.StartHour}</p>
+                    <p><strong>Időpont vége:</strong> ${reservation.EndHour}</p>
+                    <button class="delete-button" onclick="deleteReservation(${reservation.ReserveId})">Törlés</button>
                 </div>
             `).join('');
         } else {
@@ -456,15 +440,11 @@ async function deleteReservation(reservationId) {
     }
 }
 
-
-
-
 function logOut() {
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("email");
     window.location.href = "http://127.0.0.1:8000/static/login.html";
 }
-
 
 function closeReservations() {
     document.getElementsByClassName('your-reservations')[0].style.display = 'none';

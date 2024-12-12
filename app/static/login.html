@@ -12,11 +12,11 @@
     <div class="content-container">
     <h1>Üdvözöllek a Sapi Foglalón!</h1>
     <div class="login-container">
-        <form class="login-form">
+        <form id="login-form">
             <h2>Bejelentkezés</h2>
             <div class="input-group">
                 <label for="email">Email:</label>
-                <input type="email" id="email" name="email" placeholder="Ide írd az email címed:" required>
+                <input type="text" id="email" name="email" placeholder="Ide írd az email címed:" required>
             </div>
             <div class="input-group">
                 <label for="password">Jelszó:</label>
@@ -24,6 +24,7 @@
             </div>
             <button type="submit" class="login-button">Belépés</button>
         </form>
+        <p id="error-message" style="color: red;"></p>
     </div></div>
     <script src="loginValidation.js"></script>  
 </body>

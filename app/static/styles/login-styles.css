@@ -37,7 +37,7 @@ h1 {
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
 }
 
-.login-form h2 {
+#login-form h2 {
     margin-bottom: 40px;   
     color: black;
     font-size:35px;

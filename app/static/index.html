@@ -12,7 +12,8 @@
 <body>
     <div class="shrink">
     <div class="header">
-    <h1>Sapi Foglalo</h1>
+    <p id="logged-in-as"></p>
+    <h1>Sapi Foglaló</h1>
     <button class="list-button" onclick="listReservations()">Foglalásaid</button>
     <button class="logout-button" onclick="logOut()">Kijelentkezés</button>
     </div>
@@ -25,26 +26,18 @@
         <div class="kalap"></div>
     </div></div>
     
-    <!-- Modal for booking form -->
     <div class="modal" id="bookingModal">
         <div class="modal-content">
-            <h2>Foglalás <span id="roomName">Room</span></h2>
+            <h2>Foglalás <span id="roomName">Terem</span></h2>
             <form id="bookingForm">
-                <!-- <label for="name">Nev:</label><br>
-                <input type="text" id="name" name="name" required><br><br> -->
-                
-                <label for="date">Foglalas datum:</label><br>
+                <label for="date">Foglalási dátum:</label><br>
                 <input type="date" id="date" name="date" required><br><br>
-
-                <label for="date">Kezdeti ora:</label><br>
+                <label for="date">Foglalás kezdete:</label><br>
                 <input type="time" id="start_hour" name="start_hour" required><br><br>
-
-                <label for="date">Vegso ora:</label><br>
+                <label for="date">Foglalás vége:</label><br>
                 <input type="time" id="end_hour" name="end_hour" required><br><br>
-                
-                
-                <button type="button" class="submit-btn" onclick="submitBooking()">Confirm Booking</button>
-                <button type="button" class="close-btn" onclick="closeModal()">Cancel</button>
+                <button type="button" class="submit-btn" onclick="submitBooking()">Foglalás leadása</button>
+                <button type="button" class="close-btn" onclick="closeModal()">Vissza</button>
                 
             </form>
         </div>
@@ -61,7 +54,7 @@
         <div class="reservation-content">
             
         </div>
-        <button type="button" class="close-btn" onclick="closeReservations()">Vissza</button> 
+        <button type="button" class="close-your-reservations-btn" onclick="closeReservations()">Vissza</button> 
         </div>
     </div>
 

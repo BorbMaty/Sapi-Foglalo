@@ -18,6 +18,11 @@ h1 {
     align-items: center;
     justify-content: space-between;
 }
+#logged-in-as {
+    color: black;
+    font-size: 20px;
+    margin-right: 100px;
+}
 
 .logout-button {
     padding: 10px 20px;
@@ -33,3 +38,23 @@ h1 {
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     border: 3px solid black;
 }
+.logout-button:hover {
+    transform: scale(1.05);
+}
+
+.content-with-button {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 600px;
+    max-height: 600px; /* Limit height */
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    font-size: 18px;
+    text-align: left;
+    overflow-y: auto; /* Enable scrolling for overflow */
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    gap: 15px; /* Add space between reservations */
+    position: relative;
+}
+

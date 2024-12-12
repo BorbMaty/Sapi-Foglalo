@@ -44,6 +44,7 @@
     font-size: 25px;
     padding:5px;
     margin-top:10px;
+    border: solid black 3px;
 }
 .modal-content label{
     margin:30px;
@@ -53,7 +54,7 @@
     margin-bottom: 50px;
 }
 .close-btn {
-    background: #ff6565;
+    background: #d30909;
     color: white;
     padding: 8px 12px;
     border: none;
@@ -62,9 +63,11 @@
     font-size: 30px;
     padding:10px;
     margin-top:50px;
+    border: solid black 3px;
+    transition: transform 0.2s;
 }
 .submit-btn {
-    background: #17750b;
+    background: #08c03f;
     color: white;
     padding: 8px 12px;
     border: none;
@@ -73,26 +76,22 @@
     margin-top: 10px;
     font-size: 30px;
     margin-top:50px;
+    border: solid black 3px;
+    transition: transform 0.2s;
 }
-.query-btn {
-    background: #849e10;
-    color: white;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
-    font-size: 30px;
-    margin-top:50px;
+.close-btn:hover{
+    transform: scale(1.05);
+}
+.submit-btn:hover{
+    transform: scale(1.05);
 }
 #outputMessage {
     font-size: 30px;
-    margin-bottom: 10px;
     position: absolute;
-    top: 10px;
+    margin-bottom:10px;
+    top: 0px;
     left: 50%;
     transform: translateX(-50%);
-    color: #333;
     font-weight: bold;
 }
 .foglalt, .szabad {
@@ -106,6 +105,7 @@
     border-radius: 5px;
     scrollbar-width: thin;
     scrollbar-color: #aaa #fff;
+    border: solid black 3px;
 }
 
 .foglalt::-webkit-scrollbar, .szabad::-webkit-scrollbar {
@@ -123,9 +123,25 @@
 }
 
 .foglalt {
-    background-color: #0000003f;
+    background-color: rgb(255, 73, 73);
 }
 
 .szabad {
-    background-color: #09d391;
+    background-color: #08c03f;
+}
+
+.booking {
+    background: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 18px;
+    display: flex;
+    flex-direction: column;
+    border: solid black 3px;
+}
+
+.booking p {
+    margin: 5px 0;
 }
