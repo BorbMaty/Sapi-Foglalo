@@ -394,15 +394,23 @@ async function listReservations() {
             }
 
             // Populate reservations using the specified format
-            reservationContent.innerHTML = reservations.map((reservation, index) => `
-                <div class="reservation-item" id="reservation-${reservation.ReserveId}">
-                    <p><strong>Terem:</strong> ${reservation.RoomId}</p>
-                    <p><strong>Dátum:</strong> ${reservation.Date}</p>
-                    <p><strong>Időpont kezdete:</strong> ${reservation.StartHour}</p>
-                    <p><strong>Időpont vége:</strong> ${reservation.EndHour}</p>
-                    <button class="delete-button" onclick="deleteReservation(${reservation.ReserveId})">Törlés</button>
-                </div>
-            `).join('');
+            reservationContent.innerHTML = reservations.map((reservation, index) => {
+                // Extract the year from the date
+                const year = new Date(reservation.Date).getFullYear();
+                const month = new Date(reservation.Date).getMonth() + 1;
+                const day = new Date(reservation.Date).getDate() ;
+            
+                return `
+                    <div class="reservation-item" id="reservation-${reservation.ReserveId}">
+                        <p><strong>Terem:</strong> ${reservation.RoomId}</p>
+                        <p><strong>Dátum:</strong> ${year}.${month}.${day}.</p>
+                        <p><strong>Időpont kezdete:</strong> ${reservation.StartHour}</p>
+                        <p><strong>Időpont vége:</strong> ${reservation.EndHour}</p>
+                        <button class="delete-button" onclick="deleteReservation(${reservation.ReserveId})">Törlés</button>
+                    </div>
+                `;
+            }).join('');
+            
         } else {
             const errorMessage = await response.text();
             console.error("API Error:", errorMessage);
