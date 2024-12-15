@@ -21,8 +21,8 @@ Egy egyszerű és felhasználóbarát webalkalmazás, amely lehetővé teszi ter
 
 1. Klónozd a projektet:
    ```bash
-   git clone https://github.com/felhasznalo/teremfoglalos.git
-   cd teremfoglalos
+   git clone https://github.com/BorbMaty/Sapi-Foglalo.git
+   cd Sapi-Foglalo
    ```
 
 2. Hozd létre a virtuális környezetet és telepítsd a függőségeket:
