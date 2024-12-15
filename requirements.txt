@@ -4,3 +4,4 @@ fastapi
 mysql-connector-python
 pydantic
 pyodbc
+passlib
