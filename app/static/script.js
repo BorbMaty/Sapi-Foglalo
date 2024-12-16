@@ -64,7 +64,7 @@ const levels = new Map([
         { id: 308, name: "308", class: "room r308" },
         { id: 307, name: "307", class: "room r307" },
         { id: 330, name: "Kertészmérnöki Tanszék", class: "room nonclickable r330" },
-        { id: 338, name: "Könyvtár", class: "room r338" },
+        { id: 338, name: "Könyvtár", class: "room nonclickable r338" },
         { id: 337, name: "337", class: "room nonclickable r337" }
         
     ]],
